@@ -1,0 +1,266 @@
+<!doctype html>
+<!-- 
+Author: Sebastian Mancke
+License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/licenses/by-sa/3.0/
+--><html ng-app="presentation">
+  <head>
+    <title>AngularJS Einführung</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=800" />
+    <link href="./lib/bootstrap.css" rel="stylesheet" media="screen"/>
+    <script src="./lib/jquery.min.js"></script>
+    <script src="./lib/bootstrap.min.js"></script>
+    <script src="./lib/angular.min.js"></script>
+    <script src="./lib/angular-locale_de-de.js"></script>
+    <script src="./lib/angular-resource.min.js"></script>
+
+    <link href="./lib/prettify/prettify.css" rel="stylesheet" media="screen"/>
+    <script src="./lib/prettify/prettify.js"></script>
+
+    <script src="./tarent-slide/tarent-slide.js"></script>
+    <link href="./tarent-slide/tarent-slide.css" rel="stylesheet"/>
+
+    <script src="./lib/live.js"></script>
+
+    <script>
+     app.directive('listing', [function () {
+       return {
+	 restrict: 'AE',
+
+	 link: function (scope, elem, attrs) {
+	   var targetElement = $( '#' + attrs.targetid );
+	   var html = targetElement.html();
+	   html = html.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').trim();
+	   html = html.replace(/ng-binding/g, '').replace(/ng-pristine/g, '').replace(/ng-scope/g, '').replace(/ng-valid/g, '').replace(/ class="\W?"/g, '');
+	   //html = html.replace(/\n\w+/g, '\n');
+	   html = html.replace(/\n.*!-- ngIf:.*/g, '');
+	   html = html.replace(/\n.*!-- ngRepeat:.*/g, '');
+	   elem.html(html+elem.html());
+	   elem.addClass('prettyprint');
+	 }		
+       }
+     }]);
+    </script>
+  </head>
+  <body onload="prettyPrint()">
+
+    <slide>
+	<img style="position: relative; top: 200px; left: 0px" src="res/angular_logo.png">
+	<div style="position: relative; top: 50px; right: 20px; margin: auto;">
+	  <p>
+	    <h2 style="text-align: right; font-size: 80px; line-height: 80px;">AngularJS</h2>
+	    <h2 style="text-align: right">Sebastian Mancke</h2>
+	  </p>
+	</div>
+    </slide>
+
+    <slide>
+      <h1>AngularJS - Einordnung</h1>
+      <br>
+      <h2>Kernkonzepte</h2>
+      <ul>
+	<li>Umfassendes MVC Framework</li>
+	<li>Ausgerichtet auf Single Page Apps</li>
+	<li>Browser-Seitiges Templating</li>
+	<li>Designed auf Testbarkeit</li>
+      </ul>
+      <br>
+      <h2>Abgrenzung</h2>
+      <ul>
+	<li>zu JQuery: Deklarativ, Wenig Hacking im DOM</li>
+	<li>zu Knockout.JS: Viel umfassender</li>
+      </ul>
+    </slide>
+
+    <slide>
+      <h1>Die Basics</h1>
+      <h2>Deklaration und Includes</h2>      
+      <br>
+      <pre class="prettyprint" style="padding-bottom: 0px">
+&lt;html ng-app="presentation"&gt;
+...
+&lt;script src="./lib/jquery.min.js"&gt;&lt;/script&gt;
+&lt;script src="./lib/angular.min.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+    var app = angular.module('presentation', []);
+&lt;/script&gt;</pre>
+      <br><ul>
+	<li>Eine Page kann mehrere Apps beinhalten.</li>
+	<li>angular.min.js ~ 97K
+	<li>Initialisierungszeit inkl. JQuery: ~250ms</li>
+	<li>Nutzt JQuery, kann aber auch ohne (eingeschränkte Funktionalität)</li>
+      </ul>
+    </slide>
+    
+    <slide>
+      <div id="simpleBindingExample">
+	<h1>Einfache Bindings {{demo}}</h1>
+	AngularJS erm&ouml;glicht ein Templating direkt im Browser.
+	<hr/>
+	<p>Demo: {{demo}}</p>
+	<input class="form-control" type="text" ng-model="demo"> 
+      </div>
+      <hr/>
+      <pre listing targetId="simpleBindingExample"></pre>
+    </slide>
+
+    <slide>
+      <h1>Bindings - weitere Beispiele</h1>
+      AngularJS verfügt über eine Reihe praktischer Hilfsmittel für Bindings: <code>ng-model</code>, <code>ng-if</code>, <code>ng-init</code>
+
+      <br><br>
+      <pre listing targetId="checkboxBindingExample">
+
+&lt;h3 ng-if="state != 'disabled'">AngularJS ist cool!&lt;/h3&gt;</pre>
+      <hr>
+      <div id="checkboxBindingExample">
+	<input type="checkbox" ng-model="state" ng-true-value="enabled" ng-false-value="disabled" ng-init="state='enabled'">
+	<p>State: {{state}}</p>
+	<select class="form-control" ng-model="state">
+          <option>enabled</option>
+          <option>disabled</option>
+	</select>
+	<h3 ng-if="state == 'enabled'">AngularJS ist cool!</h3>      
+      </div>
+    </slide>
+   
+    <script id="bindingExample1">
+     app.controller('BindingsCtrl1', function($scope) {
+       console.log('init controller ..');
+       $scope.answer = 42;
+       $scope.anyFunction = function () {
+	 $scope.question = ', is the answer!';
+       }});
+    </script>
+    <slide>
+      <h1>Controller</h1>
+      <h3>Logik ist in AngularJS in controllern organisert.</h3>
+      <ul>
+	<li>Controller definieren einen <b>Scope</b> für Variablen.</li>
+	<li>Initialisierungscode wird direkt ausgeführt.</li>
+	<li>Funktionen werden im <code>$scope</code> agbelegt.</li>
+      </ul>
+      <hr/>
+      <div class="container-fluid">
+	<div class="row">
+	  <div class="col-md-8">
+	    <pre listing targetId="bindingExample1"></pre>
+	  </div>
+	  <div class="col-md-offset-1 col-md-3" id="bindingExampleHtml1">
+	    <div  ng-controller="BindingsCtrl1">
+	      <button type="button" class="btn" ng-click="anyFunction()">Click me</button>
+	      <h3>{{answer}}{{question}}</h3>
+	    </div>
+	  </div>
+	</div>
+	<div class="row">
+	  <div class="col-md-12">
+	    <pre listing targetId="bindingExampleHtml1"></pre>
+	  </div>
+	</div>
+      </div>	  
+    </slide>
+
+    <script id="service">
+     app.service('helloService', function() {
+       this.sayHello = function() {
+	 return "Hello, World!"
+       };
+     });
+    </script>     
+    <script id="factory">
+     app.factory('helloFactory', function() {
+       return {
+	 sayHello: function() {
+	   return "Hello, World!"
+	 }
+       }});
+    </script>
+    <slide>
+      <h1>Factories und Services</h1>
+      Geteilte Daten oder zentrale Funktionalität der Controller werden ausgelagert. 
+      <h2>Services</h2>
+      <pre listing targetId="service"></pre>
+      <h2>Factories</h2>
+      <pre listing targetId="factory"></pre>
+    </slide>
+
+    <script id="dependencyInjection1">
+     app.controller('DependencyInjection1', function($scope, helloService, helloFactory) {
+       console.log(helloService.sayHello())
+       console.log(helloFactory.sayHello());
+     });
+    </script>
+    <script id="dependencyInjection2">
+     app.controller('DependencyInjection2', ['$scope', 'helloService', 'helloFactory', 
+					     function($scope, helloService, helloFactory) {
+       console.log(helloService.sayHello())
+       console.log(helloFactory.sayHello());
+     }]);
+    </script>
+    <slide>
+      <h1>Dependency injection</h1>
+      <h3>Abhängigkeiten in controllern werden 'injected':</h3>
+      <pre listing targetId="dependencyInjection1"></pre>
+      <h3>Alternative Schreibweise:</h3>
+      <ul>
+	<li>Namen in Strings eingeschlossen</li>
+	<li>Robust gegen minifying</li>
+      </ul>
+      <pre listing targetId="dependencyInjection2"></pre>
+    </slide>    
+
+    <script id="repeatController">
+     app.controller('RepeatController', function($scope) {
+       $scope.persons = [
+	 {first: 'Arthur', last: 'Dent'},
+	 {first: 'Zaphod', last: 'Beeblebrox'},
+	 {first: 'Marvin', last: 'robot'},
+       ]});
+    </script>
+    <slide>
+      <h1>Iteration über Daten</h1>
+      <h3>Mit <code>ng-repeat</code> lassen sich einfach Tabellen und Listen aufbauen.</h3>
+      <pre listing targetId="repeatController"></pre>
+      <pre class="prettyprint">
+&lt;table class=".." ng-controller="RepeatController"&gt;
+    &lt;tr ng-repeat="person in persons"&gt;
+        &lt;td&gt;{&#8203;{person.first}}&lt;/td&gt; &lt;td&gt;{&#8203;{person.last}}&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;</pre>
+      <table class="table table-striped table-bordered" ng-controller="RepeatController">
+	<tr ng-repeat="person in persons">
+	  <td>{{person.first}}</td>
+	  <td>{{person.last}}</td>
+	</tr>
+      </table>
+    </slide>
+
+    <slide ng-controller="RepeatController">
+      <h1>Iteration - Filter + Sortierung</h1>
+      <h3>Filter und Sortierung lassen sich einfach einbauen.</h3>
+      <pre listing targetId="searchOrder"></pre>
+      <pre listing targetId="searchFilter"></pre>
+      <pre class="prettyprint">&lt;tr ng-repeat="person in persons | orderBy:filterRow | filter: filterText"&gt;</pre>
+
+      <form class="form-inline" role="form">
+	<div class="form-group" id="searchOrder" >
+	  <select class="form-control" ng-model="orderField">
+            <option>first</option>
+            <option>last</option>
+	  </select>
+	</div>
+	<div class="form-group" id="searchFilter" >
+	  <input class="form-control" type="text" ng-model="filterText"> 
+	</div>
+      </form>
+      <br>
+      <table class="table table-striped table-bordered" >
+	<tr ng-repeat="person in persons | orderBy:orderField | filter: filterText">
+	  <td>{{person.first}}</td>
+	  <td>{{person.last}}</td>
+	</tr>
+      </table>
+    </slide>
+  </body>
+</html>
