@@ -23,6 +23,10 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
     <script src="./lib/live.js"></script>
 
     <script>
+     /**
+      * This directive allows us to list code from the live presentation examples
+      * within a pretified listing.
+      */
      app.directive('listing', [function () {
        return {
 	 restrict: 'AE',
@@ -96,7 +100,6 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
       <div id="simpleBindingExample">
 	<h1>Einfache Bindings {{demo}}</h1>
 	AngularJS erm&ouml;glicht ein Templating direkt im Browser.
-	<hr/>
 	<p>Demo: {{demo}}</p>
 	<input class="form-control" type="text" ng-model="demo"> 
       </div>
@@ -123,6 +126,27 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
 	<h3 ng-if="state == 'enabled'">AngularJS ist cool!</h3>      
       </div>
     </slide>
+
+    <slide>
+      <h1>Bindings - classen und styles</h1>
+      Für typische HTML-Aufgaben hat AngularJS passende Direktiven.
+      <br>
+      <h2><code>ng-class</code></h2>
+      <pre listing targetId="styleBindingExample"></pre>  
+      <div id="styleBindingExample">
+	<input type="checkbox" ng-model="everyThingOk" ng-init="everyThingOk=true">
+	<span ng-class="{'alert-success':everyThingOk, 'alert-danger':!everyThingOk }"  class="alert">This is the message</span>
+      </div>
+      <br>
+      <hr/>
+      <h2><code>ng-style</code></h2>
+      <pre listing targetId="styleBindingExample2"></pre>  
+      <div id="styleBindingExample2">
+	<button class="btn" ng-click="myStyle={color:'red', 'font-weight':'bold'}">red</button>
+	<button class="btn" ng-click="myStyle={'color':'blue'}">blue</button>
+	<span ng-style="myStyle">Sample Text, myStyle={{myStyle}}</span>
+      </div>
+    </slide>   
    
     <script id="bindingExample1">
      app.controller('BindingsCtrl1', function($scope) {
@@ -161,6 +185,79 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
       </div>	  
     </slide>
 
+    <script id="formaterController">     
+     app.controller('FormaterCtrl', function($scope) {
+       $scope.number = 42;
+     });
+     app.filter('custom', function() {
+       return function(value) {
+	 return '-' + value +'.00 bli bla';
+       }
+     })
+    </script>
+    <slide ng-controller="FormaterCtrl">
+      <h1>Formater</h1>
+      <h3>Zuf Formatierung von Werten können Formater eingebunden werden.</h3>
+      
+      <pre listing targetId="formaterController"></pre>
+      <pre listing targetId="formaterControllerUsage"></pre>
+      <hr/>
+      <div id="formaterControllerUsage">
+	<div>Number: {{number | number:4}}</div>
+	<div>Currency: {{number | currency}}</div>
+	<div>Custom: {{number | custom}}</div>
+      </div>
+    </slide>
+
+
+    <script id="svgController">
+     app.controller('SVGCtrl', function($scope) {
+       $scope.circle = { r:110, x: 200, y: 200 };
+       function update() {
+	 var date = new Date();
+	 console.log(date);
+	 var sec = date.getSeconds()  + date.getMilliseconds()/1000;
+	 $scope.sec = {
+	   x: $scope.circle.x + ($scope.circle.r-5) * Math.cos(sec/60 * Math.PI * 2 - 90),
+	   y: $scope.circle.y + ($scope.circle.r-5) * Math.sin(sec/60 * Math.PI * 2 - 90)
+	 }
+	 $scope.min = {
+	   x: $scope.circle.x + ($scope.circle.r-5) * Math.cos(date.getMinutes()/60 * Math.PI * 2 - 90),
+	   y: $scope.circle.y + ($scope.circle.r-5) * Math.sin(date.getMinutes()/60 * Math.PI * 2 - 90)
+	 }
+	 $scope.hour = {
+	   x: $scope.circle.x + ($scope.circle.r-50) * Math.cos(((date.getHours()-1) % 12)/12 * Math.PI * 2 - 90),
+	   y: $scope.circle.y + ($scope.circle.r-50) * Math.sin(((date.getHours()-1) % 12)/12 * Math.PI * 2 - 90)
+	 }
+	 window.setTimeout(function() {$scope.$apply(update)}, 100);
+       }       
+       update();
+     });
+    </script>
+    <slide ng-controller="SVGCtrl">
+      <h1>AngularJS Spielereien mit SVG</h1>
+      <h3>Nicht nur HTML lässt sich mit Bindings versehen!</h3>
+      <pre listing targetId="svgController"></pre>
+    </slide>
+
+    <slide ng-controller="SVGCtrl">
+      <h1>AngularJS Spielereien mit SVG</h1>
+      <pre listing targetId="svg"></pre>
+      <div id="svg" style="position: relative; bottom: 0px; left:680px;">
+	<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg" version="1.1">
+  <circle ng-attr-cx="{{circle.x}}" ng-attr-cy="{{circle.y}}" ng-attr-r="{{circle.r}}" 
+	  style="stroke:#7D7D7D;stroke-width:2;fill:#EBEBEB" />
+  <line ng-attr-x1="{{circle.x}}"  ng-attr-y1="{{circle.y}}" ng-attr-x2="{{sec.x}}"  ng-attr-y2="{{sec.y}}" 
+	style="stroke:#E16969;stroke-width:1" />
+  <line ng-attr-x1="{{circle.x}}"  ng-attr-y1="{{circle.y}}" ng-attr-x2="{{min.x}}"  ng-attr-y2="{{min.y}}" 
+	style="stroke:#E16969;stroke-width:5" />
+  <line ng-attr-x1="{{circle.x}}"  ng-attr-y1="{{circle.y}}" ng-attr-x2="{{hour.x}}"  ng-attr-y2="{{hour.y}}" 
+	style="stroke:#E16969;stroke-width:5" />
+	</svg>
+      </div>
+    </slide>
+
+      
     <script id="service">
      app.service('helloService', function() {
        this.sayHello = function() {
