@@ -188,6 +188,7 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
     <script id="formaterController">     
      app.controller('FormaterCtrl', function($scope) {
        $scope.number = 42;
+       $scope.time = new Date();	        
      });
      app.filter('custom', function() {
        return function(value) {
@@ -197,7 +198,7 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
     </script>
     <slide ng-controller="FormaterCtrl">
       <h1>Formater</h1>
-      <h3>Zuf Formatierung von Werten können Formater eingebunden werden.</h3>
+      <h3>Zuf Formatierung von Werten gibt es Formater.</h3>
       
       <pre listing targetId="formaterController"></pre>
       <pre listing targetId="formaterControllerUsage"></pre>
@@ -206,106 +207,9 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
 	<div>Number: {{number | number:4}}</div>
 	<div>Currency: {{number | currency}}</div>
 	<div>Custom: {{number | custom}}</div>
+	<div>Time: {{time | date:'medium'}}</div>
       </div>
     </slide>
-
-
-    <script id="svgController">
-     app.controller('SVGCtrl', function($scope) {
-       $scope.circle = { r:110, x: 200, y: 200 };
-       function update() {
-	 var date = new Date();
-	 console.log(date);
-	 var sec = date.getSeconds()  + date.getMilliseconds()/1000;
-	 $scope.sec = {
-	   x: $scope.circle.x + ($scope.circle.r-5) * Math.cos(sec/60 * Math.PI * 2 - 90),
-	   y: $scope.circle.y + ($scope.circle.r-5) * Math.sin(sec/60 * Math.PI * 2 - 90)
-	 }
-	 $scope.min = {
-	   x: $scope.circle.x + ($scope.circle.r-5) * Math.cos(date.getMinutes()/60 * Math.PI * 2 - 90),
-	   y: $scope.circle.y + ($scope.circle.r-5) * Math.sin(date.getMinutes()/60 * Math.PI * 2 - 90)
-	 }
-	 $scope.hour = {
-	   x: $scope.circle.x + ($scope.circle.r-50) * Math.cos(((date.getHours()-1) % 12)/12 * Math.PI * 2 - 90),
-	   y: $scope.circle.y + ($scope.circle.r-50) * Math.sin(((date.getHours()-1) % 12)/12 * Math.PI * 2 - 90)
-	 }
-	 window.setTimeout(function() {$scope.$apply(update)}, 100);
-       }       
-       update();
-     });
-    </script>
-    <slide ng-controller="SVGCtrl">
-      <h1>AngularJS Spielereien mit SVG</h1>
-      <h3>Nicht nur HTML lässt sich mit Bindings versehen!</h3>
-      <pre listing targetId="svgController"></pre>
-    </slide>
-
-    <slide ng-controller="SVGCtrl">
-      <h1>AngularJS Spielereien mit SVG</h1>
-      <pre listing targetId="svg"></pre>
-      <div id="svg" style="position: relative; bottom: 0px; left:680px;">
-	<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg" version="1.1">
-  <circle ng-attr-cx="{{circle.x}}" ng-attr-cy="{{circle.y}}" ng-attr-r="{{circle.r}}" 
-	  style="stroke:#7D7D7D;stroke-width:2;fill:#EBEBEB" />
-  <line ng-attr-x1="{{circle.x}}"  ng-attr-y1="{{circle.y}}" ng-attr-x2="{{sec.x}}"  ng-attr-y2="{{sec.y}}" 
-	style="stroke:#E16969;stroke-width:1" />
-  <line ng-attr-x1="{{circle.x}}"  ng-attr-y1="{{circle.y}}" ng-attr-x2="{{min.x}}"  ng-attr-y2="{{min.y}}" 
-	style="stroke:#E16969;stroke-width:5" />
-  <line ng-attr-x1="{{circle.x}}"  ng-attr-y1="{{circle.y}}" ng-attr-x2="{{hour.x}}"  ng-attr-y2="{{hour.y}}" 
-	style="stroke:#E16969;stroke-width:5" />
-	</svg>
-      </div>
-    </slide>
-
-      
-    <script id="service">
-     app.service('helloService', function() {
-       this.sayHello = function() {
-	 return "Hello, World!"
-       };
-     });
-    </script>     
-    <script id="factory">
-     app.factory('helloFactory', function() {
-       return {
-	 sayHello: function() {
-	   return "Hello, World!"
-	 }
-       }});
-    </script>
-    <slide>
-      <h1>Factories und Services</h1>
-      Geteilte Daten oder zentrale Funktionalität der Controller werden ausgelagert. 
-      <h2>Services</h2>
-      <pre listing targetId="service"></pre>
-      <h2>Factories</h2>
-      <pre listing targetId="factory"></pre>
-    </slide>
-
-    <script id="dependencyInjection1">
-     app.controller('DependencyInjection1', function($scope, helloService, helloFactory) {
-       console.log(helloService.sayHello())
-       console.log(helloFactory.sayHello());
-     });
-    </script>
-    <script id="dependencyInjection2">
-     app.controller('DependencyInjection2', ['$scope', 'helloService', 'helloFactory', 
-					     function($scope, helloService, helloFactory) {
-       console.log(helloService.sayHello())
-       console.log(helloFactory.sayHello());
-     }]);
-    </script>
-    <slide>
-      <h1>Dependency injection</h1>
-      <h3>Abhängigkeiten in controllern werden 'injected':</h3>
-      <pre listing targetId="dependencyInjection1"></pre>
-      <h3>Alternative Schreibweise:</h3>
-      <ul>
-	<li>Namen in Strings eingeschlossen</li>
-	<li>Robust gegen minifying</li>
-      </ul>
-      <pre listing targetId="dependencyInjection2"></pre>
-    </slide>    
 
     <script id="repeatController">
      app.controller('RepeatController', function($scope) {
@@ -359,5 +263,162 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
 	</tr>
       </table>
     </slide>
+
+    <slide>
+      <h1>Scopes</h1>
+      <h2>Was sind Scopes</h2>
+      <ul>
+	<li>Scopes sind die AngularJS-Datenobjekte, die das Modell beinhalten.</li>
+	<li>Jeder Ausdruck wird im Kontext eines Scope ausgeführt.</li>
+	<li>Die Scopes sind hierarchisch entlang des DOM geschachtelt.</li>
+      </ul>
+      <h2>Child Scopes</h2>
+      <ul>
+	<li>Scopes können geschachtelt werden.</li>
+	<li>Geschachtelte Scopes erben Properties des übergeordneten Scope.</li>
+	<li>Eigene properties sind nach außen nicht sichtbar.</li>
+      </ul>
+      <h2>Isolierte Scopes</h2>
+      <ul>
+	<li>Erben keine Daten.</li>
+	<li>Können aber Properties über ein Mapping an parent scope binden.</li>	
+      </ul>
+    </slide>
+
+    <slide>
+      <h1>Änderungen überwachen</h1>      
+      <h2><code>$scope.$watch()</code></h2>
+      <h3>Mit $watch() kann das Datenmodell überwacht werden.</h3>
+      Verwendung: <code>$watch(watchExpression, [listener], [objectEquality]);</code>
+      
+      <br>
+      <br>
+      <h2><code>$scope.$watchCollection()</code>
+      <h3>Dienst zur BEobachtung der Inhalte von Collections.</h3>
+      Verwendung: <code>$watchCollection(obj, listener);</code>
+      
+      <br>
+      <br>
+      <hr>
+      <pre class="prettyprint">
+$scope.$watch('backlogItems', function(newValue, oldValue) {
+	console.log('user has modified "$scope.backlogItems" ..');
+	..
+    }
+}, true);</pre>
+    </slide>
+
+    <slide>
+      <h1><code>$scope.$apply()</code></h1>
+	<h3>Manipulationen am Datenmodell müssen immer im Kontext von 
+	  AngularJS erfolgen. Sonst erfolgt kein Update der View.</h3>
+	<br>
+	<h3>Dies kann über <code>$scope.apply()</code> erzwungen werden.</h3>
+	<br>
+	<h3>Häufigste Anwendung: 
+	  <ul>
+	    <li>window.setTimeout()</li>
+	    <li>native DOM-Events</li>
+	    <li>Einbindung vorhandener Komponenten</li>
+	  </ul>
+	</h3>
+    </slide>
+
+    <script id="svgController">
+     app.controller('SVGCtrl', function($scope) {
+       var shift = 135;
+       $scope.circle = { r:130, x: shift, y: shift };
+
+       function update() {
+	 $scope.date = new Date();	 
+
+	 var sec = $scope.date.getSeconds()  + $scope.date.getMilliseconds()/1000;
+	 var min = $scope.date.getMinutes() + $scope.date.getSeconds()/60;
+	 var h = $scope.date.getHours()%12 + $scope.date.getMinutes()/60;
+	 $scope.quarter = (1+ Math.cos(sec/60 * Math.PI * 24)) * 5 + 2;
+	 $scope.sec = { x: shift + 100 * Math.cos(sec/60 * Math.PI * 2 - Math.PI/2),
+			y: shift + 100 * Math.sin(sec/60 * Math.PI * 2 - Math.PI/2) };
+         $scope.min = { x: shift + 100 * Math.cos(min/60 * Math.PI * 2 - Math.PI/2),
+			y: shift + 100 * Math.sin(min/60 * Math.PI * 2 - Math.PI/2) };
+	 $scope.hour = { x: shift + 40 * Math.cos(h/12 * Math.PI * 2 - Math.PI/2),
+			 y: shift + 40* Math.sin(h/12 * Math.PI * 2 - Math.PI/2) };
+
+	 window.setTimeout(function() {$scope.$apply(update)}, 100);
+       }       
+       update();
+     });
+    </script>
+    <slide ng-controller="SVGCtrl">
+      <h1>AngularJS Spielereien mit SVG</h1>
+      <h3>Nicht nur HTML lässt sich mit Bindings versehen!</h3>
+      <pre listing targetId="svg"></pre>
+      {{date | date:'medium'}}
+      <div id="svg" style="position: relative; left: 350px; top: -30px;">
+	<svg width="280" height="280" xmlns="http://www.w3.org/2000/svg" version="1.1">
+  <circle ng-attr-cx="{{circle.x}}" ng-attr-cy="{{circle.y}}" ng-attr-r="{{circle.r}}" 
+	  style="stroke:#7D7D7D;fill:#EBEBEB" ng-attr-stroke-width="{{quarter}}"/>
+  <line ng-attr-x1="{{circle.x}}"  ng-attr-y1="{{circle.y}}" ng-attr-x2="{{sec.x}}"  ng-attr-y2="{{sec.y}}" 
+	style="stroke:#E16969;stroke-width:1" />
+  <line ng-attr-x1="{{circle.x}}"  ng-attr-y1="{{circle.y}}" ng-attr-x2="{{min.x}}"  ng-attr-y2="{{min.y}}" 
+	style="stroke:#E16969;stroke-width:5" />
+  <line ng-attr-x1="{{circle.x}}"  ng-attr-y1="{{circle.y}}" ng-attr-x2="{{hour.x}}"  ng-attr-y2="{{hour.y}}" 
+	style="stroke:#E16969;stroke-width:5" />
+	</svg>
+      </div>
+    </slide>
+
+    <slide ng-controller="SVGCtrl">
+      <h1>AngularJS Spielereien mit SVG</h1>
+      <pre listing targetId="svgController"></pre>
+    </slide>
+      
+    <script id="service">
+     app.service('helloService', function() {
+       this.sayHello = function() {
+	 return "Hello, World!"
+       };
+     });
+    </script>     
+    <script id="factory">
+     app.factory('helloFactory', function() {
+       return {
+	 sayHello: function() {
+	   return "Hello, World!"
+	 }
+       }});
+    </script>
+    <slide>
+      <h1>Factories und Services</h1>
+      Geteilte Daten oder zentrale Funktionalität der Controller werden ausgelagert. 
+      <h2>Services</h2>
+      <pre listing targetId="service"></pre>
+      <h2>Factories</h2>
+      <pre listing targetId="factory"></pre>
+    </slide>
+
+    <script id="dependencyInjection1">
+     app.controller('DependencyInjection1', function($scope, helloService, helloFactory) {
+       console.log(helloService.sayHello())
+       console.log(helloFactory.sayHello());
+     });
+    </script>
+    <script id="dependencyInjection2">
+     app.controller('DependencyInjection2', ['$scope', 'helloService', 'helloFactory', 
+					 function($scope, helloService, helloFactory) {
+       console.log(helloService.sayHello())
+       console.log(helloFactory.sayHello());
+     }]);
+    </script>
+    <slide>
+      <h1>Dependency injection</h1>
+      <h3>Abhängigkeiten in controllern werden 'injected':</h3>
+      <pre listing targetId="dependencyInjection1"></pre>
+      <h3>Alternative Schreibweise:</h3>
+      <ul>
+	<li>Namen in Strings eingeschlossen</li>
+	<li>Robust gegen minifying</li>
+      </ul>
+      <pre listing targetId="dependencyInjection2"></pre>
+    </slide>    
   </body>
 </html>
