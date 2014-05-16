@@ -337,11 +337,11 @@ $scope.$watch('backlogItems', function(newValue, oldValue) {
 	 var h = $scope.date.getHours()%12 + $scope.date.getMinutes()/60;
 	 $scope.quarter = (1+ Math.cos(sec/60 * Math.PI * 24)) * 5 + 2;
 	 $scope.sec = { x: shift + 100 * Math.cos(sec/60 * Math.PI * 2 - Math.PI/2),
-			y: shift + 100 * Math.sin(sec/60 * Math.PI * 2 - Math.PI/2) };
+			y: shift + 100 * Math.sin(sec/60 * Math.PI * 2 - Math.PI/2)};
          $scope.min = { x: shift + 100 * Math.cos(min/60 * Math.PI * 2 - Math.PI/2),
-			y: shift + 100 * Math.sin(min/60 * Math.PI * 2 - Math.PI/2) };
+			y: shift + 100 * Math.sin(min/60 * Math.PI * 2 - Math.PI/2)};
 	 $scope.hour = { x: shift + 40 * Math.cos(h/12 * Math.PI * 2 - Math.PI/2),
-			 y: shift + 40* Math.sin(h/12 * Math.PI * 2 - Math.PI/2) };
+			 y: shift + 40* Math.sin(h/12 * Math.PI * 2 - Math.PI/2)};
 
 	 window.setTimeout(function() {$scope.$apply(update)}, 100);
        }       
@@ -420,5 +420,160 @@ $scope.$watch('backlogItems', function(newValue, oldValue) {
       </ul>
       <pre listing targetId="dependencyInjection2"></pre>
     </slide>    
+
+    <slide>
+      <h1>Eigene Direktiven</h1>
+      <h3>AngularJS stellt viele HTML-Erweiterungen (Direktiven) zur Verfügung.</h3>
+      <h3>Eigene Direktiven lassen sich sehr einfach bauen.</h3>
+      <pre class="prettyprint">
+	app.directive('name', function () {
+	  return {
+	    restrict: ..
+	    template: ..
+	    replace: ..
+	    templateURL: ..
+	    transclude: ..
+	    link: ..
+	    scope: ..
+	  }
+	});</pre>
+    </script>
+    <h3>Über die Parameter der direktiven sind sehr unterschiedliche Anwendungsfälle abbildbar.</h3>
+    </slide>
+
+    <slide>
+      <h1>Direktiven - <code>restrict:</code></h1>
+      <h2>Verwendung als Element</h2>
+      <pre class="prettyprint">
+app.directive('myDirective', function () {
+  return {
+    restrict: 'E',
+  }});</pre>
+      <pre class="prettyprint">&lt;my-directive ...&gt;&lt;/my-directive&gt;</pre>
+
+      <h2>Verwendung als Attribut</h2>
+      <pre class="prettyprint">restrict: 'A',</pre>
+      <pre class="prettyprint">&lt;div my-directive=".." ...&gt;&lt;/div&gt; oder &lt;div my-directive&gt;&lt;/div&gt;</pre> 
+
+      <h2>Verwendung als Klasse</h2>
+      <pre class="prettyprint">restrict: 'C',</pre>
+      <pre class="prettyprint">&lt;div class="my-directive" ...&gt;&lt;/div&gt;</pre> 
+
+      <h3>Die Kombination der Optionen geht auch, z.B. <code>restrict: 'AE';</code> </h3>
+    </slide>
+
+    <script id="myButton">
+      app.directive('myButton', function () {
+       return {
+	 restrict: 'E',
+         template: '<button type="button" class="btn">click me</button>',
+       }});
+    </script>
+    <slide>
+      <h1>Direktiven - <code>template:</code></h1>
+      HTML-Templates können auf einfache Weise angegeben werden.
+      <h2>Java-Script</h2>
+      <pre listing targetId="myButton"></pre>
+      <h2>Verwendung</h2>      
+      <pre class="prettyprint">&lt;my-button/&gt;</pre>
+      <h2>Ergebnis im Dom</h2>
+      <pre listing targetId="button"></pre>
+      Mit <code>replace: true</code> würde das umgebende Tag ersetzt werden.
+      <hr/>
+      <div id="button">
+	<my-button/>
+      </div>
+    </slide>
+
+    <slide>
+      <h1>Direktiven - <code>templateURL:</code></h1>
+      <h3>Templates können auch extern definiert werden werden.</h3>
+      <h3>Dabei sorgt ein <code>$templateCache</code> dafür dies nur einmal zu laden.</h3>
+      
+      <br>
+      <h2>Alternative 1: Externes laden von Templates:</h2>
+      <pre class="prettyprint">templateULR: '/myButton.html'</pre>
+
+      <br>
+      <h2>Alternative 2: Definition im <code>&lt;script/&gt;</code>-Tag</h2>      
+      <pre class="prettyprint">&lt;script type="text/ng-template id="/myButton.html"&gt;
+	&lt;button type="button" class="btn"&gt;click me&lt;/button&gt;
+&lt;/script&gt;</pre>
+    </slide>
+    
+    <script id="myButton2">
+      app.directive('myButton2', function () {
+       return {
+	 restrict: 'E',
+	 transclude: true,
+         template: '<button type="button" class="btn">\
+                    <span ng-transclude></span></button>',
+       }});
+    </script>
+    <slide>
+      <h1>Direktiven - <code>transclude:</code></h1>
+      Child-Inhalte können auch in ein Template eingeschlossen werden.
+      <h2>Java-Script</h2>
+      <pre listing targetId="myButton2"></pre>
+      <h2>Verwendung</h2>      
+      <pre class="prettyprint">&lt;my-button2&gt;Thats the &lt;strong&gt;label!&lt;/strong&gt;&lt;my-button2/&gt;</pre>
+      <hr/>
+      <div id="transcludeButton">
+	<my-button2>Thats the <strong>label!</strong></my-button2>
+      </div>
+    </slide>
+
+    <script id="myLinkedButton">
+      app.directive('myLinkedButton', function () {
+       return {
+	 restrict: 'E',
+         template: '<button type="button" class="btn">click me</button>',
+	 link: function (scope, elem, attrs) {
+	   elem.on('click', function() {
+	     alert(attrs.message);
+	   });
+	 }}});
+    </script>
+    <slide>
+      <h1>Direktiven - <code>link:</code></h1>
+      <h3>Mit dem <code>link</code>-Attribut kann beliebiger Code ausführt werden.</h3>
+      <ul>
+	<li>Manipulation des Dom</li>
+	<li>Registrierung von Event-Listenern</li>
+	<li>Integration mit anderen JS-Libraries</li>
+      </ul>
+      <pre listing targetId="myLinkedButton"></pre>
+      <pre class="prettyprint">&lt;my-button message="42, ist the answer!"/&gt;</pre>
+      <div id="button">
+	<my-linked-button message="42, ist the answer!"/>
+      </div>
+    </slide>
+
+    <script id="myScopedButton">
+
+      app.directive('myScopedButton', function () {
+       return {
+	 restrict: 'E',
+	 scope: {
+	   myMessage: '@message',
+	   myModel: '=model',
+	   myAction: '&action',
+	 },
+         template: '<input class="form-control" type="text" ng-model="myModel">\
+                      <button type="button" class="btn" ng-click="myAction">{{myMessage}}</button>',
+       }});
+    </script>
+    <slide>
+      <h1>Direktiven - <code>scope:</code></h1>
+      <h3>Direktiven können einen isolierten Scope besitzen.</h3>
+      <pre listing targetId="myScopedButton"></pre>
+      <pre class="prettyprint">TODO ..</pre>
+      <hr>
+      <div id="scopedButton">
+	<my-scoped-button message="I'm a button!" model="anyVariableFromScope" action="anyVariableFromScope = 'hii'"></my-scoped-button>
+	<div>anyVariableFromScope: {{anyVariableFromScope}}</div>
+      </div>
+    </slide>
+    
   </body>
 </html>
