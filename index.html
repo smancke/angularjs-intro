@@ -11,6 +11,7 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
     <script src="./lib/jquery.min.js"></script>
     <script src="./lib/bootstrap.min.js"></script>
     <script src="./lib/angular.min.js"></script>
+    <script src="./lib/angular-mocks-http.js"></script>
     <script src="./lib/angular-locale_de-de.js"></script>
     <script src="./lib/angular-resource.min.js"></script>
 
@@ -20,7 +21,8 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
     <script src="./tarent-slide/tarent-slide.js"></script>
     <link href="./tarent-slide/tarent-slide.css" rel="stylesheet"/>
 
-    <script src="./lib/live.js"></script>
+
+<!--    <script src="./lib/live.js"></script> --> 
 
     <script>
      /**
@@ -29,19 +31,51 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
       */
      app.directive('listing', [function () {
        return {
-	 restrict: 'AE',
+         restrict: 'AE',
 
-	 link: function (scope, elem, attrs) {
-	   var targetElement = $( '#' + attrs.targetid );
-	   var html = targetElement.html();
-	   html = html.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').trim();
-	   html = html.replace(/ng-binding/g, '').replace(/ng-pristine/g, '').replace(/ng-scope/g, '').replace(/ng-valid/g, '').replace(/ class="\W?"/g, '');
-	   //html = html.replace(/\n\w+/g, '\n');
-	   html = html.replace(/\n.*!-- ngIf:.*/g, '');
-	   html = html.replace(/\n.*!-- ngRepeat:.*/g, '');
-	   elem.html(html+elem.html());
-	   elem.addClass('prettyprint');
-	 }		
+         link: function (scope, elem, attrs) {
+           var targetElement = $( '#' + attrs.targetid );
+           var html = targetElement.html();
+           html = html.replace(/^[\t ]*\n+/, ""); //remove empty lines at begin
+
+           while (html[0] == ' ') {        
+             html = html.replace(/^ /, ""); //remove indentationn of first lines
+             html = html.replace(/\n /g, "\n"); //remove indentationn of all other lines
+           }
+
+           // split long lines on white spaces
+           lines = html.split("\n");
+           html = '';
+
+           for (var i=0; i<lines.length; i++) {
+             var pos = lines[i].lastIndexOf(' ', 85)
+             if (lines[i].length > 85 && pos != -1) {
+               html += lines[i].substring(0, pos);
+               html += "\n";
+               while (lines[i] == ' ') {
+                 html += ' ';
+               }
+               html += ' ';
+               html += lines[i].substring(pos);
+             } else {
+               html += lines[i];
+             }
+             html += "\n";
+           }
+
+           html = html.trim();
+           
+           html = html.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+           html = html.replace(/\s?ng-binding/g, '')
+                      .replace(/\s?ng-pristine/g, '')
+                      .replace(/\s?ng-scope/g, '')
+                      .replace(/\s?ng-valid/g, '')
+                      .replace(/ class="\s?"/g, '');
+           html = html.replace(/\n.*!-- ngIf:.*/g, '');
+           html = html.replace(/\n.*!-- ngRepeat:.*/g, '');
+           elem.html(html+elem.html());
+           elem.addClass('prettyprint');
+         }              
        }
      }]);
     </script>
@@ -49,13 +83,14 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
   <body onload="prettyPrint()">
 
     <slide>
-	<img style="position: relative; top: 200px; left: 0px" src="res/angular_logo.png">
-	<div style="position: relative; top: 50px; right: 20px; margin: auto;">
-	  <p>
-	    <h2 style="text-align: right; font-size: 80px; line-height: 80px;">AngularJS</h2>
-	    <h2 style="text-align: right">Sebastian Mancke</h2>
-	  </p>
-	</div>
+        <img style="position: relative; top: 200px; left: 0px" src="res/angular_logo.png">
+        <div style="position: relative; top: 50px; right: 20px; margin: auto;">
+          <p>
+            <h2 style="text-align: right; font-size: 80px; line-height: 80px;">AngularJS</h2>
+            <h2 style="text-align: right">Sebastian Mancke</h2>
+            <h6 style="text-align: right">Creative Commons BY-SA 3.0</h6>
+          </p>
+        </div>
     </slide>
 
     <slide>
@@ -63,16 +98,16 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
       <br>
       <h2>Kernkonzepte</h2>
       <ul>
-	<li>Umfassendes MVC Framework</li>
-	<li>Ausgerichtet auf Single Page Apps</li>
-	<li>Browser-Seitiges Templating</li>
-	<li>Designed auf Testbarkeit</li>
+        <li>Umfassendes MVC Framework</li>
+        <li>Ausgerichtet auf Single Page Apps</li>
+        <li>Browser-Seitiges Templating</li>
+        <li>Designed auf Testbarkeit</li>
       </ul>
       <br>
       <h2>Abgrenzung</h2>
       <ul>
-	<li>zu JQuery: Deklarativ, Wenig Hacking im DOM</li>
-	<li>zu Knockout.JS: Viel umfassender</li>
+        <li>zu JQuery: Deklarativ, Wenig Hacking im DOM</li>
+        <li>zu Knockout.JS: Viel umfassender</li>
       </ul>
     </slide>
 
@@ -86,22 +121,22 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
 &lt;script src="./lib/jquery.min.js"&gt;&lt;/script&gt;
 &lt;script src="./lib/angular.min.js"&gt;&lt;/script&gt;
 &lt;script&gt;
-    var app = angular.module('presentation', []);
+  var app = angular.module('presentation', []);
 &lt;/script&gt;</pre>
       <br><ul>
-	<li>Eine Page kann mehrere Apps beinhalten.</li>
-	<li>angular.min.js ~ 97K
-	<li>Initialisierungszeit inkl. JQuery: ~250ms</li>
-	<li>Nutzt JQuery, kann aber auch ohne (eingeschränkte Funktionalität)</li>
+        <li>Eine Page kann mehrere Apps beinhalten.</li>
+        <li>angular.min.js ~ 97K
+        <li>Initialisierungszeit inkl. JQuery: ~250ms</li>
+        <li>Nutzt JQuery, kann aber auch ohne (eingeschränkte Funktionalität)</li>
       </ul>
     </slide>
     
     <slide>
       <div id="simpleBindingExample">
-	<h1>Einfache Bindings {{demo}}</h1>
-	AngularJS erm&ouml;glicht ein Templating direkt im Browser.
-	<p>Demo: {{demo}}</p>
-	<input class="form-control" type="text" ng-model="demo"> 
+        <h1>Einfache Bindings {{demo}}</h1>
+        AngularJS erm&ouml;glicht ein Templating direkt im Browser.
+        <p>Demo: {{demo}}</p>
+        <input class="form-control" type="text" ng-model="demo"> 
       </div>
       <hr/>
       <pre listing targetId="simpleBindingExample"></pre>
@@ -117,13 +152,13 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
 &lt;h3 ng-if="state != 'disabled'">AngularJS ist cool!&lt;/h3&gt;</pre>
       <hr>
       <div id="checkboxBindingExample">
-	<input type="checkbox" ng-model="state" ng-true-value="enabled" ng-false-value="disabled" ng-init="state='enabled'">
-	<p>State: {{state}}</p>
-	<select class="form-control" ng-model="state">
+        <input type="checkbox" ng-model="state" ng-true-value="enabled" ng-false-value="disabled" ng-init="state='enabled'">
+        <p>State: {{state}}</p>
+        <select class="form-control" ng-model="state">
           <option>enabled</option>
           <option>disabled</option>
-	</select>
-	<h3 ng-if="state == 'enabled'">AngularJS ist cool!</h3>      
+        </select>
+        <h3 ng-if="state == 'enabled'">AngularJS ist cool!</h3>      
       </div>
     </slide>
 
@@ -134,17 +169,17 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
       <h2><code>ng-class</code></h2>
       <pre listing targetId="styleBindingExample"></pre>  
       <div id="styleBindingExample">
-	<input type="checkbox" ng-model="everyThingOk" ng-init="everyThingOk=true">
-	<span ng-class="{'alert-success':everyThingOk, 'alert-danger':!everyThingOk }"  class="alert">This is the message</span>
+        <input type="checkbox" ng-model="everyThingOk" ng-init="everyThingOk=true">
+        <span ng-class="{'alert-success':everyThingOk, 'alert-danger':!everyThingOk }"  class="alert">This is the message</span>
       </div>
       <br>
       <hr/>
       <h2><code>ng-style</code></h2>
       <pre listing targetId="styleBindingExample2"></pre>  
       <div id="styleBindingExample2">
-	<button class="btn" ng-click="myStyle={color:'red', 'font-weight':'bold'}">red</button>
-	<button class="btn" ng-click="myStyle={'color':'blue'}">blue</button>
-	<span ng-style="myStyle">Sample Text, myStyle={{myStyle}}</span>
+        <button class="btn" ng-click="myStyle={color:'red', 'font-weight':'bold'}">red</button>
+        <button class="btn" ng-click="myStyle={'color':'blue'}">blue</button>
+        <span ng-style="myStyle">Sample Text, myStyle={{myStyle}}</span>
       </div>
     </slide>   
    
@@ -153,46 +188,46 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
        console.log('init controller ..');
        $scope.answer = 42;
        $scope.anyFunction = function () {
-	 $scope.question = ', is the answer!';
+         $scope.question = ', is the answer!';
        }});
     </script>
     <slide>
       <h1>Controller</h1>
       <h3>Logik ist in AngularJS in controllern organisert.</h3>
       <ul>
-	<li>Controller definieren einen <b>Scope</b> für Variablen.</li>
-	<li>Initialisierungscode wird direkt ausgeführt.</li>
-	<li>Funktionen werden im <code>$scope</code> agbelegt.</li>
+        <li>Controller definieren einen <b>Scope</b> für Variablen.</li>
+        <li>Initialisierungscode wird direkt ausgeführt.</li>
+        <li>Funktionen werden im <code>$scope</code> agbelegt.</li>
       </ul>
       <hr/>
       <div class="container-fluid">
-	<div class="row">
-	  <div class="col-md-8">
-	    <pre listing targetId="bindingExample1"></pre>
-	  </div>
-	  <div class="col-md-offset-1 col-md-3" id="bindingExampleHtml1">
-	    <div  ng-controller="BindingsCtrl1">
-	      <button type="button" class="btn" ng-click="anyFunction()">Click me</button>
-	      <h3>{{answer}}{{question}}</h3>
-	    </div>
-	  </div>
-	</div>
-	<div class="row">
-	  <div class="col-md-12">
-	    <pre listing targetId="bindingExampleHtml1"></pre>
-	  </div>
-	</div>
-      </div>	  
+        <div class="row">
+          <div class="col-md-8">
+            <pre listing targetId="bindingExample1"></pre>
+          </div>
+          <div class="col-md-offset-1 col-md-3" id="bindingExampleHtml1">
+            <div ng-controller="BindingsCtrl1">
+              <button type="button" class="btn" ng-click="anyFunction()">Click me</button>
+              <h3>{{answer}}{{question}}</h3>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <pre listing targetId="bindingExampleHtml1"></pre>
+          </div>
+        </div>
+      </div>      
     </slide>
 
     <script id="formaterController">     
      app.controller('FormaterCtrl', function($scope) {
        $scope.number = 42;
-       $scope.time = new Date();	        
+       $scope.time = new Date();                
      });
      app.filter('custom', function() {
        return function(value) {
-	 return '-' + value +'.00 bli bla';
+         return '-' + value +'.00 bli bla';
        }
      })
     </script>
@@ -204,19 +239,19 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
       <pre listing targetId="formaterControllerUsage"></pre>
       <hr/>
       <div id="formaterControllerUsage">
-	<div>Number: {{number | number:4}}</div>
-	<div>Currency: {{number | currency}}</div>
-	<div>Custom: {{number | custom}}</div>
-	<div>Time: {{time | date:'medium'}}</div>
+        <div>Number: {{number | number:4}}</div>
+        <div>Currency: {{number | currency}}</div>
+        <div>Custom: {{number | custom}}</div>
+        <div>Time: {{time | date:'medium'}}</div>
       </div>
     </slide>
 
     <script id="repeatController">
      app.controller('RepeatController', function($scope) {
        $scope.persons = [
-	 {first: 'Arthur', last: 'Dent'},
-	 {first: 'Zaphod', last: 'Beeblebrox'},
-	 {first: 'Marvin', last: 'robot'},
+         {first: 'Arthur', last: 'Dent'},
+         {first: 'Zaphod', last: 'Beeblebrox'},
+         {first: 'Marvin', last: 'robot'},
        ]});
     </script>
     <slide>
@@ -225,15 +260,15 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
       <pre listing targetId="repeatController"></pre>
       <pre class="prettyprint">
 &lt;table class=".." ng-controller="RepeatController"&gt;
-    &lt;tr ng-repeat="person in persons"&gt;
-        &lt;td&gt;{&#8203;{person.first}}&lt;/td&gt; &lt;td&gt;{&#8203;{person.last}}&lt;/td&gt;
-    &lt;/tr&gt;
+  &lt;tr ng-repeat="person in persons"&gt;
+    &lt;td&gt;{&#8203;{person.first}}&lt;/td&gt; &lt;td&gt;{&#8203;{person.last}}&lt;/td&gt;
+  &lt;/tr&gt;
 &lt;/table&gt;</pre>
       <table class="table table-striped table-bordered" ng-controller="RepeatController">
-	<tr ng-repeat="person in persons">
-	  <td>{{person.first}}</td>
-	  <td>{{person.last}}</td>
-	</tr>
+        <tr ng-repeat="person in persons">
+          <td>{{person.first}}</td>
+          <td>{{person.last}}</td>
+        </tr>
       </table>
     </slide>
 
@@ -245,22 +280,22 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
       <pre class="prettyprint">&lt;tr ng-repeat="person in persons | orderBy:filterRow | filter: filterText"&gt;</pre>
 
       <form class="form-inline" role="form">
-	<div class="form-group" id="searchOrder" >
-	  <select class="form-control" ng-model="orderField">
+        <div class="form-group" id="searchOrder" >
+          <select class="form-control" ng-model="orderField">
             <option>first</option>
             <option>last</option>
-	  </select>
-	</div>
-	<div class="form-group" id="searchFilter" >
-	  <input class="form-control" type="text" ng-model="filterText"> 
-	</div>
+          </select>
+        </div>
+        <div class="form-group" id="searchFilter" >
+          <input class="form-control" type="text" ng-model="filterText"> 
+        </div>
       </form>
       <br>
       <table class="table table-striped table-bordered" >
-	<tr ng-repeat="person in persons | orderBy:orderField | filter: filterText">
-	  <td>{{person.first}}</td>
-	  <td>{{person.last}}</td>
-	</tr>
+        <tr ng-repeat="person in persons | orderBy:orderField | filter: filterText">
+          <td>{{person.first}}</td>
+          <td>{{person.last}}</td>
+        </tr>
       </table>
     </slide>
 
@@ -268,20 +303,20 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
       <h1>Scopes</h1>
       <h2>Was sind Scopes</h2>
       <ul>
-	<li>Scopes sind die AngularJS-Datenobjekte, die das Modell beinhalten.</li>
-	<li>Jeder Ausdruck wird im Kontext eines Scope ausgeführt.</li>
-	<li>Die Scopes sind hierarchisch entlang des DOM geschachtelt.</li>
+        <li>Scopes sind die AngularJS-Datenobjekte, die das Modell beinhalten.</li>
+        <li>Jeder Ausdruck wird im Kontext eines Scope ausgeführt.</li>
+        <li>Die Scopes sind hierarchisch entlang des DOM geschachtelt.</li>
       </ul>
       <h2>Child Scopes</h2>
       <ul>
-	<li>Scopes können geschachtelt werden.</li>
-	<li>Geschachtelte Scopes erben Properties des übergeordneten Scope.</li>
-	<li>Eigene properties sind nach außen nicht sichtbar.</li>
+        <li>Scopes können geschachtelt werden.</li>
+        <li>Geschachtelte Scopes erben Properties des übergeordneten Scope.</li>
+        <li>Eigene properties sind nach außen nicht sichtbar.</li>
       </ul>
       <h2>Isolierte Scopes</h2>
       <ul>
-	<li>Erben keine Daten.</li>
-	<li>Können aber Properties über ein Mapping an parent scope binden.</li>	
+        <li>Erben keine Daten.</li>
+        <li>Können aber Properties über ein Mapping an parent scope binden.</li>        
       </ul>
     </slide>
 
@@ -302,26 +337,25 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
       <hr>
       <pre class="prettyprint">
 $scope.$watch('backlogItems', function(newValue, oldValue) {
-	console.log('user has modified "$scope.backlogItems" ..');
-	..
-    }
+    console.log('user has modified "$scope.backlogItems" ..');
+    ..
 }, true);</pre>
     </slide>
 
     <slide>
       <h1><code>$scope.$apply()</code></h1>
-	<h3>Manipulationen am Datenmodell müssen immer im Kontext von 
-	  AngularJS erfolgen. Sonst erfolgt kein Update der View.</h3>
-	<br>
-	<h3>Dies kann über <code>$scope.apply()</code> erzwungen werden.</h3>
-	<br>
-	<h3>Häufigste Anwendung: 
-	  <ul>
-	    <li>window.setTimeout()</li>
-	    <li>native DOM-Events</li>
-	    <li>Einbindung vorhandener Komponenten</li>
-	  </ul>
-	</h3>
+        <h3>Manipulationen am Datenmodell müssen immer im Kontext von 
+          AngularJS erfolgen. Sonst erfolgt kein Update der View.</h3>
+        <br>
+        <h3>Dies kann über <code>$scope.apply()</code> erzwungen werden.</h3>
+        <br>
+        <h3>Häufigste Anwendung: 
+          <ul>
+            <li>window.setTimeout()</li>
+            <li>native DOM-Events</li>
+            <li>Einbindung vorhandener Komponenten</li>
+          </ul>
+        </h3>
     </slide>
 
     <script id="svgController">
@@ -330,20 +364,20 @@ $scope.$watch('backlogItems', function(newValue, oldValue) {
        $scope.circle = { r:130, x: shift, y: shift };
 
        function update() {
-	 $scope.date = new Date();	 
+         $scope.date = new Date();       
 
-	 var sec = $scope.date.getSeconds()  + $scope.date.getMilliseconds()/1000;
-	 var min = $scope.date.getMinutes() + $scope.date.getSeconds()/60;
-	 var h = $scope.date.getHours()%12 + $scope.date.getMinutes()/60;
-	 $scope.quarter = (1+ Math.cos(sec/60 * Math.PI * 24)) * 5 + 2;
-	 $scope.sec = { x: shift + 100 * Math.cos(sec/60 * Math.PI * 2 - Math.PI/2),
-			y: shift + 100 * Math.sin(sec/60 * Math.PI * 2 - Math.PI/2)};
+         var sec = $scope.date.getSeconds()  + $scope.date.getMilliseconds()/1000;
+         var min = $scope.date.getMinutes() + $scope.date.getSeconds()/60;
+         var h = $scope.date.getHours()%12 + $scope.date.getMinutes()/60;
+
+         $scope.sec = { x: shift + 100 * Math.cos(sec/60 * Math.PI * 2 - Math.PI/2),
+                        y: shift + 100 * Math.sin(sec/60 * Math.PI * 2 - Math.PI/2)};
          $scope.min = { x: shift + 100 * Math.cos(min/60 * Math.PI * 2 - Math.PI/2),
-			y: shift + 100 * Math.sin(min/60 * Math.PI * 2 - Math.PI/2)};
-	 $scope.hour = { x: shift + 40 * Math.cos(h/12 * Math.PI * 2 - Math.PI/2),
-			 y: shift + 40* Math.sin(h/12 * Math.PI * 2 - Math.PI/2)};
+                        y: shift + 100 * Math.sin(min/60 * Math.PI * 2 - Math.PI/2)};
+         $scope.hour = { x: shift + 40 * Math.cos(h/12 * Math.PI * 2 - Math.PI/2),
+                         y: shift + 40* Math.sin(h/12 * Math.PI * 2 - Math.PI/2)};
 
-	 window.setTimeout(function() {$scope.$apply(update)}, 100);
+         window.setTimeout(function() {$scope.$apply(update)}, 100);
        }       
        update();
      });
@@ -354,16 +388,12 @@ $scope.$watch('backlogItems', function(newValue, oldValue) {
       <pre listing targetId="svg"></pre>
       {{date | date:'medium'}}
       <div id="svg" style="position: relative; left: 350px; top: -30px;">
-	<svg width="280" height="280" xmlns="http://www.w3.org/2000/svg" version="1.1">
-  <circle ng-attr-cx="{{circle.x}}" ng-attr-cy="{{circle.y}}" ng-attr-r="{{circle.r}}" 
-	  style="stroke:#7D7D7D;fill:#EBEBEB" ng-attr-stroke-width="{{quarter}}"/>
-  <line ng-attr-x1="{{circle.x}}"  ng-attr-y1="{{circle.y}}" ng-attr-x2="{{sec.x}}"  ng-attr-y2="{{sec.y}}" 
-	style="stroke:#E16969;stroke-width:1" />
-  <line ng-attr-x1="{{circle.x}}"  ng-attr-y1="{{circle.y}}" ng-attr-x2="{{min.x}}"  ng-attr-y2="{{min.y}}" 
-	style="stroke:#E16969;stroke-width:5" />
-  <line ng-attr-x1="{{circle.x}}"  ng-attr-y1="{{circle.y}}" ng-attr-x2="{{hour.x}}"  ng-attr-y2="{{hour.y}}" 
-	style="stroke:#E16969;stroke-width:5" />
-	</svg>
+        <svg width="280" height="280" xmlns="http://www.w3.org/2000/svg" version="1.1">
+          <circle ng-attr-cx="{{circle.x}}" ng-attr-cy="{{circle.y}}" ng-attr-r="{{circle.r}}" style="stroke:#7D7D7D;fill:#EBEBEB"/>
+          <line ng-attr-x1="{{circle.x}}"  ng-attr-y1="{{circle.y}}" ng-attr-x2="{{sec.x}}"  ng-attr-y2="{{sec.y}}" style="stroke:#E16969;stroke-width:1" />
+          <line ng-attr-x1="{{circle.x}}"  ng-attr-y1="{{circle.y}}" ng-attr-x2="{{min.x}}"  ng-attr-y2="{{min.y}}" style="stroke:#E16969;stroke-width:5" />
+          <line ng-attr-x1="{{circle.x}}"  ng-attr-y1="{{circle.y}}" ng-attr-x2="{{hour.x}}"  ng-attr-y2="{{hour.y}}" style="stroke:#E16969;stroke-width:5" />
+        </svg>
       </div>
     </slide>
 
@@ -375,16 +405,16 @@ $scope.$watch('backlogItems', function(newValue, oldValue) {
     <script id="service">
      app.service('helloService', function() {
        this.sayHello = function() {
-	 return "Hello, World!"
+         return "Hello, World!"
        };
      });
     </script>     
     <script id="factory">
      app.factory('helloFactory', function() {
        return {
-	 sayHello: function() {
-	   return "Hello, World!"
-	 }
+         sayHello: function() {
+           return "Hello, World!"
+         }
        }});
     </script>
     <slide>
@@ -404,7 +434,7 @@ $scope.$watch('backlogItems', function(newValue, oldValue) {
     </script>
     <script id="dependencyInjection2">
      app.controller('DependencyInjection2', ['$scope', 'helloService', 'helloFactory', 
-					 function($scope, helloService, helloFactory) {
+                                         function($scope, helloService, helloFactory) {
        console.log(helloService.sayHello())
        console.log(helloFactory.sayHello());
      }]);
@@ -415,8 +445,8 @@ $scope.$watch('backlogItems', function(newValue, oldValue) {
       <pre listing targetId="dependencyInjection1"></pre>
       <h3>Alternative Schreibweise:</h3>
       <ul>
-	<li>Namen in Strings eingeschlossen</li>
-	<li>Robust gegen minifying</li>
+        <li>Namen in Strings eingeschlossen</li>
+        <li>Robust gegen minifying</li>
       </ul>
       <pre listing targetId="dependencyInjection2"></pre>
     </slide>    
@@ -426,17 +456,17 @@ $scope.$watch('backlogItems', function(newValue, oldValue) {
       <h3>AngularJS stellt viele HTML-Erweiterungen (Direktiven) zur Verfügung.</h3>
       <h3>Eigene Direktiven lassen sich sehr einfach bauen.</h3>
       <pre class="prettyprint">
-	app.directive('name', function () {
-	  return {
-	    restrict: ..
-	    template: ..
-	    replace: ..
-	    templateURL: ..
-	    transclude: ..
-	    link: ..
-	    scope: ..
-	  }
-	});</pre>
+app.directive('name', function () {
+   return {
+        restrict: ..
+        template: ..
+        replace: ..
+        templateURL: ..
+        transclude: ..
+        link: ..
+        scope: ..
+   }
+});</pre>
     </script>
     <h3>Über die Parameter der direktiven sind sehr unterschiedliche Anwendungsfälle abbildbar.</h3>
     </slide>
@@ -465,7 +495,7 @@ app.directive('myDirective', function () {
     <script id="myButton">
       app.directive('myButton', function () {
        return {
-	 restrict: 'E',
+         restrict: 'E',
          template: '<button type="button" class="btn">click me</button>',
        }});
     </script>
@@ -481,7 +511,7 @@ app.directive('myDirective', function () {
       Mit <code>replace: true</code> würde das umgebende Tag ersetzt werden.
       <hr/>
       <div id="button">
-	<my-button/>
+        <my-button/>
       </div>
     </slide>
 
@@ -497,83 +527,184 @@ app.directive('myDirective', function () {
       <br>
       <h2>Alternative 2: Definition im <code>&lt;script/&gt;</code>-Tag</h2>      
       <pre class="prettyprint">&lt;script type="text/ng-template id="/myButton.html"&gt;
-	&lt;button type="button" class="btn"&gt;click me&lt;/button&gt;
+  &lt;button type="button" class="btn"&gt;click me&lt;/button&gt;
 &lt;/script&gt;</pre>
     </slide>
     
     <script id="myButton2">
       app.directive('myButton2', function () {
        return {
-	 restrict: 'E',
-	 transclude: true,
+         restrict: 'E',
+         transclude: true,
          template: '<button type="button" class="btn">\
                     <span ng-transclude></span></button>',
        }});
     </script>
     <slide>
       <h1>Direktiven - <code>transclude:</code></h1>
-      Child-Inhalte können auch in ein Template eingeschlossen werden.
+      Inhalte können auch in ein Template eingeschlossen werden.
       <h2>Java-Script</h2>
       <pre listing targetId="myButton2"></pre>
       <h2>Verwendung</h2>      
-      <pre class="prettyprint">&lt;my-button2&gt;Thats the &lt;strong&gt;label!&lt;/strong&gt;&lt;my-button2/&gt;</pre>
+      <pre class="prettyprint">&lt;my-button2&gt;That's the &lt;strong&gt;label!&lt;/strong&gt;&lt;my-button2/&gt;</pre>
       <hr/>
       <div id="transcludeButton">
-	<my-button2>Thats the <strong>label!</strong></my-button2>
+        <my-button2>That's the <strong>label!</strong></my-button2>
       </div>
     </slide>
 
     <script id="myLinkedButton">
       app.directive('myLinkedButton', function () {
        return {
-	 restrict: 'E',
+         restrict: 'E',
          template: '<button type="button" class="btn">click me</button>',
-	 link: function (scope, elem, attrs) {
-	   elem.on('click', function() {
-	     alert(attrs.message);
-	   });
-	 }}});
+         link: function (scope, elem, attrs) {
+           elem.on('click', function() {
+             alert(attrs.message);
+           });
+         }}});
     </script>
     <slide>
       <h1>Direktiven - <code>link:</code></h1>
       <h3>Mit dem <code>link</code>-Attribut kann beliebiger Code ausführt werden.</h3>
       <ul>
-	<li>Manipulation des Dom</li>
-	<li>Registrierung von Event-Listenern</li>
-	<li>Integration mit anderen JS-Libraries</li>
+        <li>Manipulation des Dom</li>
+        <li>Registrierung von Event-Listenern</li>
+        <li>Integration mit anderen JS-Libraries</li>
       </ul>
       <pre listing targetId="myLinkedButton"></pre>
       <pre class="prettyprint">&lt;my-button message="42, ist the answer!"/&gt;</pre>
       <div id="button">
-	<my-linked-button message="42, ist the answer!"/>
+        <my-linked-button message="42, ist the answer!"/>
       </div>
     </slide>
 
-    <script id="myScopedButton">
-
-      app.directive('myScopedButton', function () {
+    <script>
+     app.controller('SayHelloCtrl', function($scope) {
+       $scope.sayHello = function() {
+         alert('Hello ..');
+       };
+     });
+    </script>
+    <script id="myScopedButton">     
+     app.directive('myScopedButton', function () {
        return {
-	 restrict: 'E',
-	 scope: {
-	   myMessage: '@message',
-	   myModel: '=model',
-	   myAction: '&action',
-	 },
+         restrict: 'E',
+         scope: {
+           myMessage: '@message', // read only mapping
+           myModel: '=model', // two way binding 
+           myAction: '&action', // function reference
+         },
          template: '<input class="form-control" type="text" ng-model="myModel">\
-                      <button type="button" class="btn" ng-click="myAction">{{myMessage}}</button>',
+          <button type="button" class="btn" ng-click="myAction()">{{myMessage}}</button>',
        }});
     </script>
     <slide>
       <h1>Direktiven - <code>scope:</code></h1>
       <h3>Direktiven können einen isolierten Scope besitzen.</h3>
       <pre listing targetId="myScopedButton"></pre>
-      <pre class="prettyprint">TODO ..</pre>
+      <pre class="prettyprint">&lt;my-scoped-button message="I'm a button!" model="anyVar" action="sayHello()"&gt;&lt;/my-scoped-button&gt;</pre>
       <hr>
-      <div id="scopedButton">
-	<my-scoped-button message="I'm a button!" model="anyVariableFromScope" action="anyVariableFromScope = 'hii'"></my-scoped-button>
-	<div>anyVariableFromScope: {{anyVariableFromScope}}</div>
+      <div id="scopedButton" ng-controller="SayHelloCtrl">
+        <my-scoped-button message="I'm a button!" model="anyVar" action="sayHello()"></my-scoped-button>
+        <div>anyVar: {{anyVar}}</div>
       </div>
     </slide>
+
     
+    <script id="httpExampleMocking">
+     app.run(function($httpBackend) {     
+       var people = [{id: 0, first: 'Arthur', last: 'Dent'},
+                     {id: 1, first: 'Zaphod', last: 'Beeblebrox'}];
+       $httpBackend.whenGET('/people').respond(people);
+       $httpBackend.whenGET('/people/1').respond(people[1]);
+       $httpBackend.expectPOST('/people/1').respond(function(data){return data});
+       
+       window.setTimeout(function() {
+         $httpBackend.flush();
+       }, 1000);
+     });
+    </script>
+    <script id="httpExample">
+     app.controller('httpExample', function($scope, $http) {
+       $http.get('/people')
+            .success(function (result) {
+              $scope.httpResult = result;
+            });
+     });
+    </script>
+    <slide ng-controller="httpExample">
+      <h1>Zugriff auf REST Ressourcen</h1>
+      <h2><code>$http</code></h2>
+      Einfache Api für HTTP-Operationen.
+      <br><br>
+      <pre listing targetId="httpExample"></pre>
+      <div>httpResult: <pre>{{httpResult}}</pre></div>
+    </slide>
+
+    <script id="resourceExample">
+     app.controller('resourceExample', function($scope, $resource) {
+       var Person = $resource('/people/:id', {id:'@id'});
+       $scope.person = Person.get({id:1}, function() {
+         $scope.person.first = 'new Name';
+         $scope.person.$save();
+       });       
+     });
+    </script>
+    <slide ng-controller="resourceExample">
+      <h1>Zugriff auf REST Ressourcen</h1>
+      <h2><code>$resource</code></h2>
+      <ul>
+        <li>Eigenes Modul</li>
+        <li>Promise-Objekte</li>
+        <li>Objektorintierten Zugriff, z.B. <code>$save</code>, <code>$delete</code></li>
+      </ul>
+      <pre class="prettyprint">&lt;script src="./lib/angular-locale_de-de.js"/&gt;
+var app = angular.module('presentation', ['ngResource']);</pre>
+      <pre listing targetId="resourceExample"></pre>
+      <div>person: <pre>{{person}}</pre></div>
+    </slide>
+
+    <slide>
+      <h1>Unit Testing</h1>
+      <h3>AngularJS ist auf gute Testbarkeit designed!</h3>
+      <h3>Durch Dependency-Injection lassen sich die Controller gut mocken.</h3>
+      <h3>angular-mocks.js stellt einige Mocks zum Testen bereit.</h3>
+      <h2>Beispiel <code>$httpBackend</code></h2>
+      <pre listing targetId="httpExampleMocking"></pre>
+    </slide>
+
+    <slide>
+      <h1>Unit Testing - Frameworks</h1>
+      <h2>Jasmine: Behavior-Driven Testing Framework</h2>
+      <pre class="prettyprint">describe("A suite", function() {
+  beforeEach(function() {
+        ...
+  });
+  it("contains spec with an expectation", function() {
+    expect(true).toBe(true);
+  });
+})</pre>
+      <h2>Karma: Testrunner</h2>
+      <ul>
+        <li>Einfache Konfiguration</li>
+        <li>Ständige Ausführung bei <kbd>Ctrl-S</kbd></li>
+        <li>Gleichzeitiger Test in mehreren Browsern</li>
+        <li>Mobile Browser können einfach angedockt werden</li>
+      </ul>
+    </slide>
+
+    <slide>
+      <h1>End-to-End Tests</h1>
+      Klassischer selenium Ansatz hat Probleme mit waits und timeouts.
+      <h2>Protractor: Web-Testing Framework</h2>
+      <h3>Einfache Api, die im Hintergrund asynchron und auf Promises arbeitet.</h3>
+      <ul>
+        <li>node.js Applikation</li>
+        <li>Nutzung von Jasmine möglich</li>
+        <li>Basiert auf webDriver (standalone Selenium Server)</li>
+        <li>Managemenent der webDriver-Dependencies</li>
+      </ul>
+    </slide>
   </body>
 </html>

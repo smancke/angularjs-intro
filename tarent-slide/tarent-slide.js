@@ -1,4 +1,4 @@
-var app = angular.module('presentation', []);
+var app = angular.module('presentation', ['ngMock', 'ngResource']);
 
 app.factory('slidedeck', [function() {
     var slidedeck = {
@@ -56,7 +56,7 @@ app.factory('slidedeck', [function() {
 	   || event.altKey || event.ctrlKey || event.shiftKey || event.metaKey ) {
 	    return;
 	}
-	console.log(event);
+	
 	switch (event.keyCode) {
 
 	case 36: // down arrow
