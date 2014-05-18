@@ -11,6 +11,7 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
     <script src="./lib/jquery.min.js"></script>
     <script src="./lib/bootstrap.min.js"></script>
     <script src="./lib/angular.min.js"></script>
+    <script src="./lib/angular-route.min.js"></script>
     <script src="./lib/angular-mocks-http.js"></script>
     <script src="./lib/angular-locale_de-de.js"></script>
     <script src="./lib/angular-resource.min.js"></script>
@@ -611,7 +612,51 @@ app.directive('myDirective', function () {
       </div>
     </slide>
 
+
     
+    <div id="viewTemplates">
+      <script type="text/ng-template" id="/defaultTemplate.html">
+        <div style="background:grey; height: 300px; "><h3>Default Template</h3></div>
+      </script>
+      <script type="text/ng-template" id="/template1.html">
+        <div style="background:green; height: 300px;"><h3>Template 1</h3></div>
+      </script>
+      <script type="text/ng-template" id="/template2.html">
+        <div style="background:blue; height: 300px;"><h3>Template 2</h3></div>
+      </script>
+    </div>
+    <script id="viewConfig">
+     app.config(function($routeProvider) {
+       $routeProvider
+        .when('/template1', {
+         templateUrl: '/template1.html',
+       }).when('/template2', {
+         templateUrl: '/template2.html',
+       }).otherwise({
+         templateUrl: '/defaultTemplate.html',
+       });       
+     });
+    </script>
+    <slide>
+      <h1>Routing</h1>
+      <h3>Seiten können modular aufgebaut werden.</h3>
+      <h3>Views werden in Templates ausgelagert.</h3>
+      <h3>Deep-Linking wird unterstützt.</h3>
+      <a class="btn btn-default" href="#defaultTemplate?slide=24">defaultTemplate</a>
+      <a class="btn btn-default" href="#template1?slide=24">template1</a>
+      <a class="btn btn-default" href="#template2?slide=24">template2</a>
+      <br><br>
+      <div id="viewExample">
+        <div ng-view></div>
+      </div>
+    </slide>
+    <slide>
+      <h1>Routing</h1>
+      <pre listing targetId="viewTemplates"></pre>
+      <pre listing targetId="viewConfig"></pre>
+      <pre class="prettyprint">&lt;div ng-view&gt;&lt;/div&gt;</pre>
+    </slide>
+   
     <script id="httpExampleMocking">
      app.run(function($httpBackend) {     
        var people = [{id: 0, first: 'Arthur', last: 'Dent'},
@@ -666,7 +711,7 @@ var app = angular.module('presentation', ['ngResource']);</pre>
     </slide>
 
     <slide>
-      <h1>Unit Testing</h1>
+      <h1>Unit Testing - mocking</h1>
       <h3>AngularJS ist auf gute Testbarkeit designed!</h3>
       <h3>Durch Dependency-Injection lassen sich die Controller gut mocken.</h3>
       <h3>angular-mocks.js stellt einige Mocks zum Testen bereit.</h3>

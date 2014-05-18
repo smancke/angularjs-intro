@@ -1,6 +1,10 @@
-var app = angular.module('presentation', ['ngMock', 'ngResource']);
+var app = angular.module('presentation', 
+                         ['ngMock', 'ngResource', 'ngRoute'],
+                         function($locationProvider) {
+//                             $locationProvider.html5Mode(true);
+                         });
 
-app.factory('slidedeck', [function() {
+app.factory('slidedeck', ['$location', '$route', function($location, $route) {
     var slidedeck = {
 	slides: [],
 	activeSlide: null,	
@@ -11,10 +15,10 @@ app.factory('slidedeck', [function() {
 	    if (this.activeSlide == null) {
 		var slideId = $(elem).attr('id');
 		$('#' + slideId).addClass('active-slide');
-
+                this.activeSlide = this.slides.length-1;
 	    }
 
-	    if (this.slides.length-1 == location.hash.substring(1)) {
+	    if (this.slides.length-1 == ($location.search()).slide) {
 		this.showSlide($(elem).attr('id'));
 	    }
 	},
@@ -24,7 +28,7 @@ app.factory('slidedeck', [function() {
 	    $('#' + slideId).addClass('active-slide');
 
 	    this.activeSlide = slideId;
-	    location.hash = this.slides.indexOf(slideId); 
+	    $location.search('slide', this.slides.indexOf(slideId)); 
 	},
 	
 	nextSlide: function() {
