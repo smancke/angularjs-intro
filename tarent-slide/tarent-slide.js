@@ -1,8 +1,5 @@
 var app = angular.module('presentation', 
-                         ['ngMock', 'ngResource', 'ngRoute'],
-                         function($locationProvider) {
-//                             $locationProvider.html5Mode(true);
-                         });
+                         ['ngMock', 'ngResource', 'ngRoute']);
 
 app.factory('slidedeck', ['$location', '$route', function($location, $route) {
     var slidedeck = {

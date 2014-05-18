@@ -30,12 +30,12 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
       * This directive allows us to list code from the live presentation examples
       * within a pretified listing.
       */
-     app.directive('listing', [function () {
+     app.directive('listingOf', [function () {
        return {
          restrict: 'AE',
 
          link: function (scope, elem, attrs) {
-           var targetElement = $( '#' + attrs.targetid );
+           var targetElement = $( '#' + attrs.listingOf );
            var html = targetElement.html();
            html = html.replace(/^[\t ]*\n+/, ""); //remove empty lines at begin
 
@@ -107,7 +107,7 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
       <br>
       <h2>Abgrenzung</h2>
       <ul>
-        <li>zu JQuery: Deklarativ, Wenig Hacking im DOM</li>
+        <li>zu JQuery: Deklarativ, wenig Hacking im DOM</li>
         <li>zu Knockout.JS: Viel umfassender</li>
       </ul>
     </slide>
@@ -140,7 +140,7 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
         <input class="form-control" type="text" ng-model="demo"> 
       </div>
       <hr/>
-      <pre listing targetId="simpleBindingExample"></pre>
+      <pre listing-of="simpleBindingExample"></pre>
     </slide>
 
     <slide>
@@ -148,7 +148,7 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
       AngularJS verfügt über eine Reihe praktischer Hilfsmittel für Bindings: <code>ng-model</code>, <code>ng-if</code>, <code>ng-init</code>
 
       <br><br>
-      <pre listing targetId="checkboxBindingExample">
+      <pre listing-of="checkboxBindingExample">
 
 &lt;h3 ng-if="state != 'disabled'">AngularJS ist cool!&lt;/h3&gt;</pre>
       <hr>
@@ -168,7 +168,7 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
       Für typische HTML-Aufgaben hat AngularJS passende Direktiven.
       <br>
       <h2><code>ng-class</code></h2>
-      <pre listing targetId="styleBindingExample"></pre>  
+      <pre listing-of="styleBindingExample"></pre>  
       <div id="styleBindingExample">
         <input type="checkbox" ng-model="everyThingOk" ng-init="everyThingOk=true">
         <span ng-class="{'alert-success':everyThingOk, 'alert-danger':!everyThingOk }"  class="alert">This is the message</span>
@@ -176,7 +176,7 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
       <br>
       <hr/>
       <h2><code>ng-style</code></h2>
-      <pre listing targetId="styleBindingExample2"></pre>  
+      <pre listing-of="styleBindingExample2"></pre>  
       <div id="styleBindingExample2">
         <button class="btn" ng-click="myStyle={color:'red', 'font-weight':'bold'}">red</button>
         <button class="btn" ng-click="myStyle={'color':'blue'}">blue</button>
@@ -194,7 +194,7 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
     </script>
     <slide>
       <h1>Controller</h1>
-      <h3>Logik ist in AngularJS in controllern organisert.</h3>
+      <h3>Logik ist in AngularJS in Controllern organisert.</h3>
       <ul>
         <li>Controller definieren einen <b>Scope</b> für Variablen.</li>
         <li>Initialisierungscode wird direkt ausgeführt.</li>
@@ -204,7 +204,7 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
       <div class="container-fluid">
         <div class="row">
           <div class="col-md-8">
-            <pre listing targetId="bindingExample1"></pre>
+            <pre listing-of="bindingExample1"></pre>
           </div>
           <div class="col-md-offset-1 col-md-3" id="bindingExampleHtml1">
             <div ng-controller="BindingsCtrl1">
@@ -215,7 +215,7 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
         </div>
         <div class="row">
           <div class="col-md-12">
-            <pre listing targetId="bindingExampleHtml1"></pre>
+            <pre listing-of="bindingExampleHtml1"></pre>
           </div>
         </div>
       </div>      
@@ -234,10 +234,10 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
     </script>
     <slide ng-controller="FormaterCtrl">
       <h1>Formater</h1>
-      <h3>Zuf Formatierung von Werten gibt es Formater.</h3>
+      <h3>Zur Formatierung von Werten gibt es Formater.</h3>
       
-      <pre listing targetId="formaterController"></pre>
-      <pre listing targetId="formaterControllerUsage"></pre>
+      <pre listing-of="formaterController"></pre>
+      <pre listing-of="formaterControllerUsage"></pre>
       <hr/>
       <div id="formaterControllerUsage">
         <div>Number: {{number | number:4}}</div>
@@ -258,7 +258,7 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
     <slide>
       <h1>Iteration über Daten</h1>
       <h3>Mit <code>ng-repeat</code> lassen sich einfach Tabellen und Listen aufbauen.</h3>
-      <pre listing targetId="repeatController"></pre>
+      <pre listing-of="repeatController"></pre>
       <pre class="prettyprint">
 &lt;table class=".." ng-controller="RepeatController"&gt;
   &lt;tr ng-repeat="person in persons"&gt;
@@ -276,8 +276,8 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
     <slide ng-controller="RepeatController">
       <h1>Iteration - Filter + Sortierung</h1>
       <h3>Filter und Sortierung lassen sich einfach einbauen.</h3>
-      <pre listing targetId="searchOrder"></pre>
-      <pre listing targetId="searchFilter"></pre>
+      <pre listing-of="searchOrder"></pre>
+      <pre listing-of="searchFilter"></pre>
       <pre class="prettyprint">&lt;tr ng-repeat="person in persons | orderBy:filterRow | filter: filterText"&gt;</pre>
 
       <form class="form-inline" role="form">
@@ -312,12 +312,12 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
       <ul>
         <li>Scopes können geschachtelt werden.</li>
         <li>Geschachtelte Scopes erben Properties des übergeordneten Scope.</li>
-        <li>Eigene properties sind nach außen nicht sichtbar.</li>
+        <li>Eigene Properties sind nach außen nicht sichtbar.</li>
       </ul>
       <h2>Isolierte Scopes</h2>
       <ul>
         <li>Erben keine Daten.</li>
-        <li>Können aber Properties über ein Mapping an parent scope binden.</li>        
+        <li>Können aber Properties über ein Mapping an Parent Scope binden.</li>        
       </ul>
     </slide>
 
@@ -330,7 +330,7 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
       <br>
       <br>
       <h2><code>$scope.$watchCollection()</code>
-      <h3>Dienst zur BEobachtung der Inhalte von Collections.</h3>
+      <h3>Dienst zur Beobachtung der Inhalte von Collections.</h3>
       Verwendung: <code>$watchCollection(obj, listener);</code>
       
       <br>
@@ -386,7 +386,7 @@ $scope.$watch('backlogItems', function(newValue, oldValue) {
     <slide ng-controller="SVGCtrl">
       <h1>AngularJS Spielereien mit SVG</h1>
       <h3>Nicht nur HTML lässt sich mit Bindings versehen!</h3>
-      <pre listing targetId="svg"></pre>
+      <pre listing-of="svg"></pre>
       {{date | date:'medium'}}
       <div id="svg" style="position: relative; left: 350px; top: -30px;">
         <svg width="280" height="280" xmlns="http://www.w3.org/2000/svg" version="1.1">
@@ -400,7 +400,7 @@ $scope.$watch('backlogItems', function(newValue, oldValue) {
 
     <slide ng-controller="SVGCtrl">
       <h1>AngularJS Spielereien mit SVG</h1>
-      <pre listing targetId="svgController"></pre>
+      <pre listing-of="svgController"></pre>
     </slide>
       
     <script id="service">
@@ -422,9 +422,9 @@ $scope.$watch('backlogItems', function(newValue, oldValue) {
       <h1>Factories und Services</h1>
       Geteilte Daten oder zentrale Funktionalität der Controller werden ausgelagert. 
       <h2>Services</h2>
-      <pre listing targetId="service"></pre>
+      <pre listing-of="service"></pre>
       <h2>Factories</h2>
-      <pre listing targetId="factory"></pre>
+      <pre listing-of="factory"></pre>
     </slide>
 
     <script id="dependencyInjection1">
@@ -443,13 +443,13 @@ $scope.$watch('backlogItems', function(newValue, oldValue) {
     <slide>
       <h1>Dependency injection</h1>
       <h3>Abhängigkeiten in controllern werden 'injected':</h3>
-      <pre listing targetId="dependencyInjection1"></pre>
+      <pre listing-of="dependencyInjection1"></pre>
       <h3>Alternative Schreibweise:</h3>
       <ul>
         <li>Namen in Strings eingeschlossen</li>
         <li>Robust gegen minifying</li>
       </ul>
-      <pre listing targetId="dependencyInjection2"></pre>
+      <pre listing-of="dependencyInjection2"></pre>
     </slide>    
 
     <slide>
@@ -469,7 +469,7 @@ app.directive('name', function () {
    }
 });</pre>
     </script>
-    <h3>Über die Parameter der direktiven sind sehr unterschiedliche Anwendungsfälle abbildbar.</h3>
+    <h3>Über die Parameter der Direktiven sind sehr unterschiedliche Anwendungsfälle abbildbar.</h3>
     </slide>
 
     <slide>
@@ -504,11 +504,11 @@ app.directive('myDirective', function () {
       <h1>Direktiven - <code>template:</code></h1>
       HTML-Templates können auf einfache Weise angegeben werden.
       <h2>Java-Script</h2>
-      <pre listing targetId="myButton"></pre>
+      <pre listing-of="myButton"></pre>
       <h2>Verwendung</h2>      
       <pre class="prettyprint">&lt;my-button/&gt;</pre>
       <h2>Ergebnis im Dom</h2>
-      <pre listing targetId="button"></pre>
+      <pre listing-of="button"></pre>
       Mit <code>replace: true</code> würde das umgebende Tag ersetzt werden.
       <hr/>
       <div id="button">
@@ -518,8 +518,8 @@ app.directive('myDirective', function () {
 
     <slide>
       <h1>Direktiven - <code>templateURL:</code></h1>
-      <h3>Templates können auch extern definiert werden werden.</h3>
-      <h3>Dabei sorgt ein <code>$templateCache</code> dafür dies nur einmal zu laden.</h3>
+      <h3>Templates können auch extern definiert werden.</h3>
+      <h3>Dabei sorgt ein <code>$templateCache</code> dafür, dies nur einmal zu laden.</h3>
       
       <br>
       <h2>Alternative 1: Externes laden von Templates:</h2>
@@ -545,7 +545,7 @@ app.directive('myDirective', function () {
       <h1>Direktiven - <code>transclude:</code></h1>
       Inhalte können auch in ein Template eingeschlossen werden.
       <h2>Java-Script</h2>
-      <pre listing targetId="myButton2"></pre>
+      <pre listing-of="myButton2"></pre>
       <h2>Verwendung</h2>      
       <pre class="prettyprint">&lt;my-button2&gt;That's the &lt;strong&gt;label!&lt;/strong&gt;&lt;my-button2/&gt;</pre>
       <hr/>
@@ -573,7 +573,7 @@ app.directive('myDirective', function () {
         <li>Registrierung von Event-Listenern</li>
         <li>Integration mit anderen JS-Libraries</li>
       </ul>
-      <pre listing targetId="myLinkedButton"></pre>
+      <pre listing-of="myLinkedButton"></pre>
       <pre class="prettyprint">&lt;my-button message="42, ist the answer!"/&gt;</pre>
       <div id="button">
         <my-linked-button message="42, ist the answer!"/>
@@ -603,7 +603,7 @@ app.directive('myDirective', function () {
     <slide>
       <h1>Direktiven - <code>scope:</code></h1>
       <h3>Direktiven können einen isolierten Scope besitzen.</h3>
-      <pre listing targetId="myScopedButton"></pre>
+      <pre listing-of="myScopedButton"></pre>
       <pre class="prettyprint">&lt;my-scoped-button message="I'm a button!" model="anyVar" action="sayHello()"&gt;&lt;/my-scoped-button&gt;</pre>
       <hr>
       <div id="scopedButton" ng-controller="SayHelloCtrl">
@@ -652,8 +652,8 @@ app.directive('myDirective', function () {
     </slide>
     <slide>
       <h1>Routing</h1>
-      <pre listing targetId="viewTemplates"></pre>
-      <pre listing targetId="viewConfig"></pre>
+      <pre listing-of="viewTemplates"></pre>
+      <pre listing-of="viewConfig"></pre>
       <pre class="prettyprint">&lt;div ng-view&gt;&lt;/div&gt;</pre>
     </slide>
    
@@ -683,7 +683,7 @@ app.directive('myDirective', function () {
       <h2><code>$http</code></h2>
       Einfache Api für HTTP-Operationen.
       <br><br>
-      <pre listing targetId="httpExample"></pre>
+      <pre listing-of="httpExample"></pre>
       <div>httpResult: <pre>{{httpResult}}</pre></div>
     </slide>
 
@@ -706,7 +706,7 @@ app.directive('myDirective', function () {
       </ul>
       <pre class="prettyprint">&lt;script src="./lib/angular-locale_de-de.js"/&gt;
 var app = angular.module('presentation', ['ngResource']);</pre>
-      <pre listing targetId="resourceExample"></pre>
+      <pre listing-of="resourceExample"></pre>
       <div>person: <pre>{{person}}</pre></div>
     </slide>
 
@@ -716,7 +716,7 @@ var app = angular.module('presentation', ['ngResource']);</pre>
       <h3>Durch Dependency-Injection lassen sich die Controller gut mocken.</h3>
       <h3>angular-mocks.js stellt einige Mocks zum Testen bereit.</h3>
       <h2>Beispiel <code>$httpBackend</code></h2>
-      <pre listing targetId="httpExampleMocking"></pre>
+      <pre listing-of="httpExampleMocking"></pre>
     </slide>
 
     <slide>
