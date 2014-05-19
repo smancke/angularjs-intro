@@ -3,6 +3,7 @@ var app = angular.module('presentation',
 
 app.factory('slidedeck', ['$location', '$route', function($location, $route) {
     var slidedeck = {
+        touchpositionX: undefined,
 	slides: [],
 	activeSlide: null,	
 
@@ -51,6 +52,19 @@ app.factory('slidedeck', ['$location', '$route', function($location, $route) {
 	},
     }
 
+    $(document).bind('touchstart', function(event) {
+        touchpositionX = event.screenX;
+    });
+    $(document).bind('touchend', function(event) {
+        if (Math.abs(touchpositionX - event.screenX) < 10) {
+            return ;
+        }
+        if (touchpositionX > event.screenX)
+	    slidedeck.nextSlide();
+        else
+	    slidedeck.prevSlide();
+    });
+        
     $(document).keydown(function(event) {
 	if (/^(input|textarea)$/i.test(event.target.nodeName) ||
 	    event.target.isContentEditable
