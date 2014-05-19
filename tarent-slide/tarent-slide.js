@@ -12,7 +12,7 @@ app.factory('slidedeck', ['$location', '$route', function($location, $route) {
 	    if (this.activeSlide == null) {
 		var slideId = $(elem).attr('id');
 		$('#' + slideId).addClass('active-slide');
-                this.activeSlide = this.slides.length-1;
+                this.activeSlide = slideId;
 	    }
 
 	    if (this.slides.length-1 == ($location.search()).slide) {
