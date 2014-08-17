@@ -5,18 +5,34 @@ body {
     overflow-x: hidden; 
 }
 
-slide {
+slides {
     position:absolute; 
     top:0; bottom:0; left:0; right:0;
     margin:auto; 
 
     background: white;
-    display: none;
     width: 1024px;
     height: 768px;
     padding-left: 20px;
     padding-right: 20px;
     font-size: 26px;  
+}
+
+.languages {
+    position: absolute;
+    bottom:0px;
+    right: 10px;
+
+    font-size: 20px;  
+}
+
+.languages a {
+    color: black;
+}
+
+
+slide {
+    display: none;
 }
 
 .active-slide {

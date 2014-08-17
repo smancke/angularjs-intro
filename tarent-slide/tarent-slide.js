@@ -119,3 +119,42 @@ app.directive('slide', ['slidedeck', function (slidedeck) {
 	}		
     }
 }]);
+
+app.directive('lang', ['$rootScope', '$location', function ($rootScope, $location) {
+    if (! $rootScope.language) {
+        if ($location.search().lang) {
+            $rootScope.language = $location.search().lang;
+        } else {
+            $rootScope.language = 'en';
+        }
+    }
+
+    return {
+	restrict: 'A',
+        
+	link: function (scope, elem, attrs) {
+            function update(language) {
+                if (attrs.lang == language) {
+                    $(elem).show();
+                } else {
+                    $(elem).hide();
+                }
+            }
+            update(scope.$root.language);
+            scope.$root.$watch('language', function(newValue, oldValue) {
+                update(newValue);
+            });
+        }
+    }
+}]);
+
+
+app.controller('LanguageCtrl', function($scope, $location) {
+    $scope.changeLang = function(language) {
+        $scope.$root.language = language;
+        $location.search('lang', language);
+    };
+    $scope.isActive = function(language) {
+        return $scope.$root.language == language;
+    };
+});
