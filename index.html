@@ -124,7 +124,7 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
             <li>Designed for testability</li>
           </ul>
           <br>
-          <h2>Limitations</h2>
+          <h2>Segregation</h2>
           <ul>
             <li>to JQuery: Declarativ, without hacking in the DOM</li>
             <li>to Knockout.JS: More comprehensive</li>
@@ -135,17 +135,17 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
       <slide>
         <h1 lang="de">Die Basics</h1>
         <h1 lang="en">Basics</h1>
-        <h2 lang="de">Declaration and includes</h2>      
-        <h2 lang="en">Deklaration und Includes</h2>      
+        <h2 lang="de">Deklaration und Includes</h2>      
+        <h2 lang="en">Declaration and includes</h2>      
         <br>
         <pre class="prettyprint" style="padding-bottom: 0px">
-          &lt;html ng-app="presentation"&gt;
-          ...
-          &lt;script src="./lib/jquery.min.js"&gt;&lt;/script&gt;
-          &lt;script src="./lib/angular.min.js"&gt;&lt;/script&gt;
-          &lt;script&gt;
-          var app = angular.module('presentation', []);
-          &lt;/script&gt;</pre>
+&lt;html ng-app="presentation"&gt;
+...
+&lt;script src="./lib/jquery.min.js"&gt;&lt;/script&gt;
+&lt;script src="./lib/angular.min.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+var app = angular.module('presentation', []);
+&lt;/script&gt;</pre>
         <br>
         <ul lang="de">
           <li>Die <code>ng-app</code> Anweisung initialisiert die Anwendung</li>
@@ -231,7 +231,7 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
       <slide>
         <h1>Controller</h1>
         <h3 lang="de">Logik ist in AngularJS in Controllern organisert.</h3>
-        <h3 lang="en">The logic is organized within controller.</h3>
+        <h3 lang="en">The logic is organized within controllers.</h3>
         <ul lang="de">
           <li>Controller definieren einen <b>Scope</b> für Variablen.</li>
           <li>Initialisierungscode wird direkt ausgeführt.</li>
@@ -240,7 +240,7 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
         <ul lang="en">
           <li>A controller defines the <b>scope</b> for variables.</li>
           <li>Initialization code will be executed directly.</li>
-          <li>Function are stored in the <code>$scope</code> variable.</li>
+          <li>Functions are stored in the <code>$scope</code> variable.</li>
         </ul>
         <hr/>
         <div class="container-fluid">
@@ -251,7 +251,7 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
             <div class="col-md-offset-1 col-md-3" id="bindingExampleHtml1">
               <div ng-controller="BindingsCtrl1">
                 <button type="button" class="btn" ng-click="anyFunction()">Click me</button>
-                <h3 lang="de">{{answer}}{{question}}</h3>
+                <h3>{{answer}}{{question}}</h3>
               </div>
             </div>
           </div>
@@ -277,7 +277,7 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
       <slide ng-controller="FormatterCtrl">
         <h1>Formatter</h1>
         <h3 lang="de">Zur Formatierung von Werten gibt es Formater.</h3>
-        <h3 lang="en">Formatter are used for displaying.</h3>
+       <h3 lang="en">Formatter are used for displaying numbers and currencies.</h3>
         
         <pre listing-of="formatterController"></pre>
         <pre listing-of="formatterControllerUsage"></pre>
@@ -302,7 +302,7 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
         <h1 lang="de">Iteration über Daten</h1>
         <h1 lang="en">Iteration over data</h1>
         <h3 lang="de">Mit <code>ng-repeat</code> lassen sich einfach Tabellen und Listen aufbauen.</h3>
-        <h3 lang="de">Tables can be created using <code>ng-repeat</code>.</h3>
+        <h3 lang="en">Tables can be created using <code>ng-repeat</code>.</h3>
         <pre listing-of="repeatController"></pre>
         <pre class="prettyprint">
           &lt;table class=".." ng-controller="RepeatController"&gt;
@@ -431,7 +431,7 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
           <h1><code>$scope.$apply()</code></h1>
           <h3>Manipulation of the model has to take place in the call context of AngularJS. Otherwise no view updaes are triggered.</h3>
           <br>
-          <h3>This can be forced <code>$scope.apply()</code>.</h3>
+          <h3>This can be forced by <code>$scope.apply()</code>.</h3>
           <br>
           <h3>Most common for:
             <ul>
@@ -538,13 +538,19 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
        }]);
       </script>
       <slide>
-        <h1 lang="de">Dependency injection</h1>
+        <h1>Dependency injection</h1>
         <h3 lang="de">Abhängigkeiten in controllern werden 'injected':</h3>
+        <h3 lang="en">The dependencies of controllers can be 'injected':</h3>
         <pre listing-of="dependencyInjection1"></pre>
         <h3 lang="de">Alternative Schreibweise:</h3>
+        <h3 lang="en">Alternative syntax:</h3>
         <ul lang="de">
-          <li>Namen in Strings eingeschlossen</li>
           <li>Robust gegen minifying</li>
+          <li>Namen in Strings eingeschlossen</li>
+        </ul>
+        <ul lang="en">
+          <li>Robust against minifying</li>
+          <li>The names are enclosed into strings</li>
         </ul>
         <pre listing-of="dependencyInjection2"></pre>
       </slide>    
@@ -557,20 +563,20 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
         <h3 lang="de">Eigene Direktiven lassen sich sehr einfach bauen.</h3>
         <h3 lang="en">It is very easy to build you own directives.</h3>
         <pre class="prettyprint">
-          app.directive('name', function () {
-          return {
-          restrict: ..
-          template: ..
-          replace: ..
-          templateURL: ..
-          transclude: ..
-          link: ..
-          scope: ..
-          }
-          });</pre>
+app.directive('name', function () {
+  return {
+    restrict: ..
+    template: ..
+    replace: ..
+    templateURL: ..
+    transclude: ..
+    link: ..
+    scope: ..
+  }
+});</pre>
     </script>
     <h3 lang="de">Über die Parameter der Direktiven sind sehr unterschiedliche Anwendungsfälle abbildbar.</h3>
-    <h3 lang="en">By using the paramters, very different use cases can be achieved.</h3>
+    <h3 lang="en">By using the paramters, different use cases can be achieved.</h3>
       </slide>
 
       <slide>
@@ -579,10 +585,10 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
         <h2 lang="de">Verwendung als Element</h2>
         <h2 lang="en">Usage as element</h2>
         <pre class="prettyprint">
-          app.directive('myDirective', function () {
-          return {
-          restrict: 'E',
-          }});</pre>
+app.directive('myDirective', function () {
+  return {
+    restrict: 'E',
+}});</pre>
         <pre class="prettyprint">&lt;my-directive ...&gt;&lt;/my-directive&gt;</pre>
 
         <h2 lang="de">Verwendung als Attribut</h2>
@@ -610,7 +616,7 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
         <h1 lang="de">Direktiven - <code>template:</code></h1>
         <h1 lang="en">Directives - <code>template:</code></h1>
         <div lang="de">HTML-Templates können auf einfache Weise angegeben werden.</div>
-        <div lang="en">HTML templates can be used very simple.</div>
+        <div lang="en">HTML templates can be used very easy.</div>
 
         <h2>Java Script</h2>
         <pre listing-of="myButton"></pre>
@@ -619,8 +625,8 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
         <h2 lang="de">Ergebnis im DOM</h2>
         <h2 lang="en">Result within the DOM</h2>
         <pre listing-of="button"></pre>
-        <divlang="en">Mit <code>replace: true</code> würde das umgebende Tag ersetzt werden.</divlang>
-        <divlang="en">With <code>replace: true</code>, the surrounding tag would be replaced.</divlang>
+        <div lang="de">Mit <code>replace: true</code> würde das umgebende Tag ersetzt werden.</div>
+        <div lang="en">With <code>replace: true</code>, the surrounding tag would be replaced.</div>
         <hr/>
         <div id="button">
           <my-button/>
@@ -631,7 +637,7 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
         <h1 lang="de">Direktiven - <code>templateURL:</code></h1>
         <h1 lang="en">Direktives - <code>templateURL:</code></h1>
         <h3 lang="de">Templates können auch extern definiert werden.</h3>
-        <h3 lang="en">Templates may only be defined externaly.</h3>
+        <h3 lang="en">Templates may also be defined externaly.</h3>
         <h3 lang="de">Dabei sorgt ein <code>$templateCache</code> dafür, dies nur einmal zu laden.</h3>
         <h3 lang="en">The <code>$templateCache</code> is responsible for single loading.</h3>
         
@@ -643,8 +649,8 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
         <h2 lang="de">Alternative 2: Definition im <code>&lt;script/&gt;</code>-Tag</h2>      
         <h2 lang="en">Alternative 2: Definition within <code>&lt;script/&gt;</code> tag</h2>      
         <pre class="prettyprint">&lt;script type="text/ng-template id="/myButton.html"&gt;
-          &lt;button type="button" class="btn"&gt;click me&lt;/button&gt;
-          &lt;/script&gt;</pre>
+  &lt;button type="button" class="btn"&gt;click me&lt;/button&gt;
+&lt;/script&gt;</pre>
       </slide>
       
       <script id="myButton2">
@@ -661,7 +667,7 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
         <h1 lang="de">Direktiven - <code>transclude:</code></h1>
         <h1 lang="en">Directives - <code>transclude:</code></h1>
         <div lang="de">Inhalte können auch in ein Template eingeschlossen werden.</div>
-        <div lang="de">Contents can also be enclosed by a template.</div>
+        <div lang="en">Contents can also be enclosed by a template.</div>
         <h2>Java Script</h2>
         <pre listing-of="myButton2"></pre>
         <h2 lang="de">Verwendung</h2> <h2 lang="en">Usage</h2>      
@@ -813,8 +819,8 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
         <h1 lang="de">Zugriff auf REST Ressourcen</h1>
         <h1 lang="en">Accessing REST resources</h1>
         <h2><code>$http</code></h2>
-        <div lang="de">Einfache Api für HTTP-Operationen.</div>
-        <div lang="en">Simple api for HTTP operations.</div>
+        <div lang="de">Einfache Api für HTTP-Operationen</div>
+        <div lang="en">Simple api for HTTP operations</div>
         <br><br>
         <pre listing-of="httpExample"></pre>
         <div>httpResult: <pre>{{httpResult}}</pre></div>
@@ -841,10 +847,10 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
         <ul lang="en">
           <li>Special module</li>
           <li>Promise objects</li>
-          <li>Object Oriented access, e.g. <code>item.$save</code>, <code>item.$delete</code></li>
+          <li>Object oriented access, e.g. <code>item.$save</code>, <code>item.$delete</code></li>
         </ul>
-        <pre class="prettyprint">&lt;script src="./lib/angular-locale_de-de.js"/&gt;
-          var app = angular.module('presentation', ['ngResource']);</pre>
+        <pre class="prettyprint">&lt;script src="./lib/angular-resource.min.js"/&gt;
+var app = angular.module('presentation', ['ngResource']);</pre>
         <pre listing-of="resourceExample"></pre>
         <div>person: <pre>{{person}}</pre></div>
       </slide>
@@ -873,13 +879,13 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
         <h2 lang="de">Jasmine: Behavior-Driven Testing Framework</h2>
         <h2 lang="en">Jasmine: Behavior driven testing framework</h2>
         <pre class="prettyprint">describe("A suite", function() {
-          beforeEach(function() {
-          ...
-          });
-          it("contains spec with an expectation", function() {
-          expect(true).toBe(true);
-          });
-          })</pre>
+  beforeEach(function() {
+    ...
+  });
+  it("contains spec with an expectation", function() {
+    expect(true).toBe(true);
+  });
+})</pre>
         <h2>Karma: Testrunner</h2>
         <ul lang="de">
           <li>Einfache Konfiguration</li>
@@ -891,7 +897,7 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
           <li>Simple configuration</li>
           <li>Instant execution on <kbd>Ctrl-S</kbd></li>
           <li>Parallel test within multiple browsers</li>
-          <li>Test in mobile browsers by simply pointing to the URL.</li>
+          <li>Test in mobile browsers by simply pointing to the URL</li>
         </ul>
       </slide>
 
@@ -911,7 +917,7 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
         <div lang="en"> 
           <h1>End-to-end tests</h1>
           The normal selenium approach has to many problems with waits and timeouts.
-          <h2>Protractor: Web-testing framework</h2>
+          <h2>Protractor: Web testing framework</h2>
           <h3>Simple api which works asynchronous in the background and brings support for promise objects.</h3>
           <ul>
             <li>node.js applikation</li>
