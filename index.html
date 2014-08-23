@@ -126,7 +126,7 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
           <br>
           <h2>Segregation</h2>
           <ul>
-            <li>to JQuery: Declarativ, without hacking in the DOM</li>
+            <li>to JQuery: Declarative, without hacking in the DOM</li>
             <li>to Knockout.JS: More comprehensive</li>
           </ul>
         </div>
@@ -136,7 +136,7 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
         <h1 lang="de">Die Basics</h1>
         <h1 lang="en">Basics</h1>
         <h2 lang="de">Deklaration und Includes</h2>      
-        <h2 lang="en">Declaration and includes</h2>      
+        <h2 lang="en">Declaration and Includes</h2>      
         <br>
         <pre class="prettyprint" style="padding-bottom: 0px">
 &lt;html ng-app="presentation"&gt;
@@ -157,7 +157,7 @@ var app = angular.module('presentation', []);
           <li>The <code>ng-app</code> initializes the application</li>
           <li>angular.min.js ~ 97K</li>
           <li>Loading an initialization time incl. JQuery: ~250ms</li>
-          <li>Uses JQuery, bus also has a minimal build in replacement (reduced functionality)</li>
+          <li>Uses JQuery, but also has a minimal build in replacement (reduced functionality)</li>
         </ul>
       </slide>
       
@@ -225,7 +225,7 @@ var app = angular.module('presentation', []);
          console.log('init controller ..');
          $scope.answer = 42;
          $scope.anyFunction = function () {
-           $scope.question = ', is the answer!';
+           $scope.question = ' is the answer!';
          }});
       </script>
       <slide>
@@ -277,7 +277,7 @@ var app = angular.module('presentation', []);
       <slide ng-controller="FormatterCtrl">
         <h1>Formatter</h1>
         <h3 lang="de">Zur Formatierung von Werten gibt es Formater.</h3>
-       <h3 lang="en">Formatter are used for displaying numbers and currencies.</h3>
+       <h3 lang="en">Formatters are used for displaying numbers and currencies.</h3>
         
         <pre listing-of="formatterController"></pre>
         <pre listing-of="formatterControllerUsage"></pre>
@@ -371,12 +371,12 @@ var app = angular.module('presentation', []);
           <h1>Scopes</h1>
           <h2>What are scopes?</h2>
           <ul>
-            <li>Scopes are the AngularJS data object holding the model.</li>
+            <li>Scopes are the AngularJS data objects holding the model.</li>
             <li>Every function call is done in the context of a scope.</li>
           </ul>
           <h2>Child scopes</h2>
           <ul>
-            <li>Scopes can be nested along the DOM's hierarchie.</li>
+            <li>Scopes can be nested along the DOM's hierarchy.</li>
             <li>Nested scopes inherit the properties of the parent scope.</li>
             <li>The self defined properties are not visible outside.</li>
           </ul>
@@ -429,7 +429,7 @@ var app = angular.module('presentation', []);
         </div>
         <div lang="en">
           <h1><code>$scope.$apply()</code></h1>
-          <h3>Manipulation of the model has to take place in the call context of AngularJS. Otherwise no view updaes are triggered.</h3>
+          <h3>Manipulation of the model has to take place in the call context of AngularJS. Otherwise no view updates are triggered.</h3>
           <br>
           <h3>This can be forced by <code>$scope.apply()</code>.</h3>
           <br>
@@ -561,7 +561,7 @@ var app = angular.module('presentation', []);
         <h3 lang="de">AngularJS stellt viele HTML-Erweiterungen (Direktiven) zur Verfügung.</h3>
         <h3 lang="en">AngularJS has many HTML extensions (directives) build in.</h3>
         <h3 lang="de">Eigene Direktiven lassen sich sehr einfach bauen.</h3>
-        <h3 lang="en">It is very easy to build you own directives.</h3>
+        <h3 lang="en">It is very easy to build your own directives.</h3>
         <pre class="prettyprint">
 app.directive('name', function () {
   return {
@@ -576,7 +576,7 @@ app.directive('name', function () {
 });</pre>
     </script>
     <h3 lang="de">Über die Parameter der Direktiven sind sehr unterschiedliche Anwendungsfälle abbildbar.</h3>
-    <h3 lang="en">By using the paramters, different use cases can be achieved.</h3>
+    <h3 lang="en">By using the parameters, different use cases can be achieved.</h3>
       </slide>
 
       <slide>
@@ -637,7 +637,7 @@ app.directive('myDirective', function () {
         <h1 lang="de">Direktiven - <code>templateURL:</code></h1>
         <h1 lang="en">Direktives - <code>templateURL:</code></h1>
         <h3 lang="de">Templates können auch extern definiert werden.</h3>
-        <h3 lang="en">Templates may also be defined externaly.</h3>
+        <h3 lang="en">Templates may also be defined externally.</h3>
         <h3 lang="de">Dabei sorgt ein <code>$templateCache</code> dafür, dies nur einmal zu laden.</h3>
         <h3 lang="en">The <code>$templateCache</code> is responsible for single loading.</h3>
         
@@ -916,14 +916,14 @@ var app = angular.module('presentation', ['ngResource']);</pre>
         </div>
         <div lang="en"> 
           <h1>End-to-end tests</h1>
-          The normal selenium approach has to many problems with waits and timeouts.
+          The normal selenium approach has too many problems with waits and timeouts.
           <h2>Protractor: Web testing framework</h2>
-          <h3>Simple api which works asynchronous in the background and brings support for promise objects.</h3>
+          <h3>Simple api which works asynchronously in the background and brings support for promise objects.</h3>
           <ul>
             <li>node.js applikation</li>
             <li>Usage together with Jasmine</li>
             <li>Based on webDriver</li>
-            <li>Managemenent of the webDriver dependencies</li>
+            <li>Management of the webDriver dependencies</li>
           </ul>
         </div>
       </slide>
