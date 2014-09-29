@@ -15,6 +15,7 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
     <script src="./lib/angular-mocks-http.js"></script>
     <script src="./lib/angular-locale_de-de.js"></script>
     <script src="./lib/angular-resource.min.js"></script>
+    <script src="./lib/angular-ui-router.js"></script>
 
     <link href="./lib/prettify/prettify.css" rel="stylesheet" media="screen"/>
     <script src="./lib/prettify/prettify.js"></script>
@@ -184,7 +185,7 @@ var app = angular.module('presentation', []);
         <br><br>
         <pre listing-of="checkboxBindingExample">
 
-          &lt;h3 ng-if="state != 'disabled'">AngularJS is cool!&lt;/h3&gt;</pre>
+&lt;h3 ng-if="state == 'enabled'">AngularJS is cool!&lt;/h3&gt;</pre>
         <hr>
         <div id="checkboxBindingExample">
           <input type="checkbox" ng-model="state" ng-true-value="enabled" ng-false-value="disabled" ng-init="state='enabled'">
@@ -230,7 +231,7 @@ var app = angular.module('presentation', []);
       </script>
       <slide>
         <h1>Controller</h1>
-        <h3 lang="de">Logik ist in AngularJS in Controllern organisert.</h3>
+        <h3 lang="de">Logik ist in AngularJS in Controllern organisiert.</h3>
         <h3 lang="en">The logic is organized within controllers.</h3>
         <ul lang="de">
           <li>Controller definieren einen <b>Scope</b> für Variablen.</li>
@@ -305,11 +306,11 @@ var app = angular.module('presentation', []);
         <h3 lang="en">Tables can be created using <code>ng-repeat</code>.</h3>
         <pre listing-of="repeatController"></pre>
         <pre class="prettyprint">
-          &lt;table class=".." ng-controller="RepeatController"&gt;
-          &lt;tr ng-repeat="person in persons"&gt;
-          &lt;td&gt;{&#8203;{person.first}}&lt;/td&gt; &lt;td&gt;{&#8203;{person.last}}&lt;/td&gt;
-          &lt;/tr&gt;
-          &lt;/table&gt;</pre>
+&lt;table ng-controller="RepeatController"&gt;
+  &lt;tr ng-repeat="person in persons"&gt;
+    &lt;td&gt;{&#8203;{person.first}}&lt;/td&gt; &lt;td&gt;{&#8203;{person.last}}&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;</pre>
         <table class="table table-striped table-bordered" ng-controller="RepeatController">
           <tr ng-repeat="person in persons">
             <td>{{person.first}}</td>
@@ -405,10 +406,10 @@ var app = angular.module('presentation', []);
         
         <hr>
         <pre class="prettyprint">
-          $scope.$watch('backlogItems', function(newValue, oldValue) {
-          console.log('user has modified "$scope.backlogItems" ..');
-          ..
-          }, true);</pre>
+$scope.$watch('backlogItems', function(newValue, oldValue) {
+    console.log('user has modified "$scope.backlogItems" ..');
+    ..
+}, true);</pre>
       </slide>
 
       <slide>
@@ -489,11 +490,47 @@ var app = angular.module('presentation', []);
         <h1 lang="en">SVG with AngularJS </h1>
         <pre listing-of="svgController"></pre>
       </slide>
+
+
+      <script id="provider">
+       app.provider('helloProvider', function() {
+         this.$get = function() {
+           return {
+             sayHello: function() {
+               return "Hello, Provider!"
+             }
+           }
+         }
+       });
+      </script>
+      <slide>
+        <h1>Provider</h1>
+        <div lang="de">
+          Geteilte Daten oder zentrale Funktionalität der Controller werden in singleton Objekte ausgelagert. 
+          <h2>Provider</h2>
+          <ul>
+            <li>Provider sind die allgemeinste Form</li>
+            <li>Können beim Start der App konfiguriert werden</li>
+            <li>Aufwändige Schreibweise</li>
+          </ul>
+          <pre listing-of="provider"></pre>
+        </div>
+        <div lang="en">
+          Shared data can be externalized to singleton objects. 
+          <h2>Provider</h2>
+          <ul>
+            <li>Providers are the most general form</li>
+            <li>They can be configured on startup</li>
+            <li>Complex syntax</li>
+          </ul>
+          <pre listing-of="provider"></pre>
+        </div>
+      </slide>
       
       <script id="service">
        app.service('helloService', function() {
          this.sayHello = function() {
-           return "Hello, World!"
+           return "Hello, Service! "; 
          };
        });
       </script>     
@@ -501,32 +538,30 @@ var app = angular.module('presentation', []);
        app.factory('helloFactory', function() {
          return {
            sayHello: function() {
-             return "Hello, World!"
+             return "Hello, Factory!"; 
            }
          }});
       </script>
+      <script id="value">
+       app.value('helloValue', "Hello, Value! ");
+      </script>
       <slide>
-        <div lang="de">
-          <h1>Factories und Services</h1>
-          Geteilte Daten oder zentrale Funktionalität der Controller werden ausgelagert. 
-          <h2>Services</h2>
-          <pre listing-of="service"></pre>
-          <h2>Factories</h2>
-          <pre listing-of="factory"></pre>
-        </div>
-        <div lang="en">
-          <h1>Factories and Services</h1>
-          Shared data and centralized functionality can be externalized. 
-          <h2>Services</h2>
-          <pre listing-of="service"></pre>
-          <h2>Factories</h2>
-          <pre listing-of="factory"></pre>
-        </div>
+        <h1>Factories, Services, ..</h1>
+        <div lang="de">Einfachere Schreibweisen für Provider.</div>
+        <div lang="en">Simple notation for providers.</div>
+        <h2>Factories</h2>
+        <pre listing-of="factory"></pre>
+        <h2>Services</h2>
+        <pre listing-of="service"></pre>
+        <h2>Value, Constant</h2>
+        <pre listing-of="value"></pre>
       </slide>
 
       <script id="dependencyInjection1">
-       app.controller('DependencyInjection1', function($scope, helloService, helloFactory) {
-         console.log(helloService.sayHello())
+       app.controller('DependencyInjection1', function($scope, helloProvider, helloValue, helloService, helloFactory) {
+         console.log(helloValue);
+         console.log(helloProvider.sayHello());
+         console.log(helloService.sayHello());
          console.log(helloFactory.sayHello());
        });
       </script>
@@ -541,7 +576,7 @@ var app = angular.module('presentation', []);
         <h1>Dependency injection</h1>
         <h3 lang="de">Abhängigkeiten in controllern werden 'injected':</h3>
         <h3 lang="en">The dependencies of controllers can be 'injected':</h3>
-        <pre listing-of="dependencyInjection1"></pre>
+        <pre ng-controller="DependencyInjection1" listing-of="dependencyInjection1"></pre>
         <h3 lang="de">Alternative Schreibweise:</h3>
         <h3 lang="en">Alternative syntax:</h3>
         <ul lang="de">
@@ -552,7 +587,7 @@ var app = angular.module('presentation', []);
           <li>Robust against minifying</li>
           <li>The names are enclosed into strings</li>
         </ul>
-        <pre listing-of="dependencyInjection2"></pre>
+        <pre ng-controller="DependencyInjection2" listing-of="dependencyInjection2"></pre>
       </slide>    
 
       <slide>
@@ -590,6 +625,8 @@ app.directive('myDirective', function () {
     restrict: 'E',
 }});</pre>
         <pre class="prettyprint">&lt;my-directive ...&gt;&lt;/my-directive&gt;</pre>
+        <div lang="de" class="small">Vorsicht:  <code>&lt;my-directive .../&gt;</code> funktioniert nicht fehlerfrei!</div>
+        <div lang="en" class="small">Attention:  <code>&lt;my-directive .../&gt;</code> does not work properly!</div>
 
         <h2 lang="de">Verwendung als Attribut</h2>
         <h2 lang="en">Usage as attribute</h2>
@@ -749,13 +786,13 @@ app.directive('myDirective', function () {
       
       <div id="viewTemplates">
         <script type="text/ng-template" id="/defaultTemplate.html">
-          <div style="background:grey; height: 300px; "><h3>Default Template</h3></div>
+          <div style="background:grey; height: 150px; "><h3>Default Template {{demoData}}</h3></div>
         </script>
         <script type="text/ng-template" id="/template1.html">
-          <div style="background:green; height: 300px;"><h3>Template 1</h3></div>
+          <div style="background:green; height: 150px;"><h3>Template 1 {{demoData}}</h3></div>
         </script>
         <script type="text/ng-template" id="/template2.html">
-          <div style="background:blue; height: 300px;"><h3>Template 2</h3></div>
+          <div style="background:blue; height: 150px;"><h3>Template 2 {{demoData}}</h3></div>
         </script>
       </div>
       <script id="viewConfig">
@@ -770,9 +807,8 @@ app.directive('myDirective', function () {
          });       
        });
       </script>
-
       <slide>
-        <h1>Routing</h1>
+        <h1>Routing - <code>$routeProvider</code></h1>
         <h3 lang="de">Seiten können modular aufgebaut werden.</h3>
         <h3 lang="en">Pages can be created in a modular fashion.</h3>
         <h3 lang="de">Views werden in Templates ausgelagert.</h3>
@@ -794,6 +830,51 @@ app.directive('myDirective', function () {
         <pre class="prettyprint">&lt;div ng-view&gt;&lt;/div&gt;</pre>
       </slide>
       
+      <script id="uiRouterConfig">
+       app.config(function($stateProvider) {
+         $stateProvider
+           .state('s1', {
+           url: '/s1',
+           views: {
+             'left' : { templateUrl: '/defaultTemplate.html' },             
+             'right' : { templateUrl: '/defaultTemplate.html'}
+           }
+         })
+           .state('s2', {
+           url: '/s2',
+           views: {
+             'left' : { templateUrl: '/template1.html' },             
+             'right' : { templateUrl: '/template2.html'}
+           }
+         });
+       });
+      </script>
+      <slide>
+        <h1>Routing - <code>ui-router</code></h1>
+        <h3>Sehr mächtiges Routing-Framework (defakto standard)</h3>
+        <ul>
+          <li>State basiert (URLs nur optional)</li>
+          <li>Einbettung mehrerer Views auf der selben Seite</li> 
+          <li>Child States</li>
+          <li>Controller Initialisierung</li>
+        </ul>
+        <h3><a href="https://github.com/angular-ui/ui-router/">https://github.com/angular-ui/ui-router/</a></h3>
+        <a class="btn btn-default" ui-sref="s1">State 1</a>
+        <a class="btn btn-default" ui-sref="s2">State 2</a>
+        <br><br>
+        <div class="row" id="viewExampleUIRouter">
+          <div ui-view="left" class="col-md-5">x</div>
+          <div ui-view="right" class="col-md-5">x</div>
+        </div>
+      </slide>
+
+      <slide>
+        <h1>Routing - <code>ui-router</code></h1>
+        <pre listing-of="uiRouterConfig"></pre>
+        <pre class="prettyprint">&lt;div ui-view="left"&gt;x&lt;/div&gt;
+&lt;div ui-view="right"&gt;x&lt;/div&gt;</pre>
+      </slide>
+
       <script id="httpExampleMocking">
        app.run(function($httpBackend) {     
          var people = [{id: 0, first: 'Arthur', last: 'Dent'},
@@ -858,7 +939,7 @@ var app = angular.module('presentation', ['ngResource']);</pre>
       <slide>
         <div lang="de">
           <h1>Unit Testing - mocking</h1>
-          <h3>AngularJS ist auf gute Testbarkeit designed!</h3>
+          <h3>AngularJS ist für gute Testbarkeit designed!</h3>
           <h3>Durch Dependency-Injection lassen sich die Controller gut mocken.</h3>
           <h3>angular-mocks.js stellt einige Mocks zum Testen bereit.</h3>
           <h2>Beispiel: <code>$httpBackend</code></h2>

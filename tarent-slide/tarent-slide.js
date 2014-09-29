@@ -1,7 +1,7 @@
 var app = angular.module('presentation', 
-                         ['ngMock', 'ngResource', 'ngRoute']);
+                         ['ngMock', 'ngResource', 'ngRoute', 'ui.router']);
 
-app.factory('slidedeck', ['$location', '$route', function($location, $route) {
+app.factory('slidedeck', ['$location', function($location) {
     var slidedeck = {
         touchpositionX: undefined,
 	slides: [],
