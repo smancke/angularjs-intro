@@ -15,7 +15,6 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
     <script src="./lib/angular-mocks-http.js"></script>
     <script src="./lib/angular-locale_de-de.js"></script>
     <script src="./lib/angular-resource.min.js"></script>
-    <script src="./lib/angular-ui-router.js"></script>
 
     <link href="./lib/prettify/prettify.css" rel="stylesheet" media="screen"/>
     <script src="./lib/prettify/prettify.js"></script>
@@ -24,7 +23,9 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
     <link href="./tarent-slide/tarent-slide.css" rel="stylesheet"/>
 
 
-<!--    <script src="./lib/live.js"></script> --> 
+<!--    <script src="./lib/live.js"></script> 
+live reload
+--> 
 
     <script>
      /**
@@ -658,7 +659,7 @@ app.directive('myDirective', function () {
         <h2>Java Script</h2>
         <pre listing-of="myButton"></pre>
         <h2 lang="de">Verwendung:</h2> <h2 lang="en">Usage:</h2>      
-        <pre class="prettyprint">&lt;my-button/&gt;</pre>
+        <pre class="prettyprint">&lt;my-button&gt;&lt;/my-button&gt;</pre>
         <h2 lang="de">Ergebnis im DOM</h2>
         <h2 lang="en">Result within the DOM</h2>
         <pre listing-of="button"></pre>
@@ -666,7 +667,7 @@ app.directive('myDirective', function () {
         <div lang="en">With <code>replace: true</code>, the surrounding tag would be replaced.</div>
         <hr/>
         <div id="button">
-          <my-button/>
+          <my-button></my-button>
         </div>
       </slide>
 
@@ -742,7 +743,7 @@ app.directive('myDirective', function () {
           <li>Integration with other JS libraries</li>
         </ul>
         <pre listing-of="myLinkedButton"></pre>
-        <pre class="prettyprint">&lt;my-button message="42, ist the answer!"/&gt;</pre>
+        <pre class="prettyprint">&lt;my-linked-button message="42, ist the answer!"/&gt;</pre>
         <div id="button">
           <my-linked-button message="42, ist the answer!"/>
         </div>
