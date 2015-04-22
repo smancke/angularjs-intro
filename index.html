@@ -15,7 +15,7 @@ License: CreativeCommons Attribution-ShareAlike, http://creativecommons.org/lice
     <script src="./lib/angular-mocks-http.js"></script>
     <script src="./lib/angular-locale_de-de.js"></script>
     <script src="./lib/angular-resource.min.js"></script>
-    <script src="./lib/angular-ui-router.js"></script>
+    <script src="./lib/angular-ui-router.min.js"></script>
 
     <link href="./lib/prettify/prettify.css" rel="stylesheet" media="screen"/>
     <script src="./lib/prettify/prettify.js"></script>
@@ -74,6 +74,7 @@ live reload
                       .replace(/\s?ng-pristine/g, '')
                       .replace(/\s?ng-scope/g, '')
                       .replace(/\s?ng-valid/g, '')
+                      .replace(/\s?ng-untouched/g, '')
                       .replace(/ class="\s?"/g, '');
            html = html.replace(/\n.*!-- ngIf:.*/g, '');
            html = html.replace(/\n.*!-- ngRepeat:.*/g, '');
@@ -190,7 +191,7 @@ var app = angular.module('presentation', []);
 &lt;h3 ng-if="state == 'enabled'">AngularJS is cool!&lt;/h3&gt;</pre>
         <hr>
         <div id="checkboxBindingExample">
-          <input type="checkbox" ng-model="state" ng-true-value="enabled" ng-false-value="disabled" ng-init="state='enabled'">
+          <input type="checkbox" ng-model="state" ng-true-value="'enabled'" ng-false-value="'disabled'" ng-init="state='enabled'">
           <p>State: {{state}}</p>
           <select class="form-control" ng-model="state">
             <option>enabled</option>
@@ -420,7 +421,7 @@ $scope.$watch('backlogItems', function(newValue, oldValue) {
           <h3>Manipulationen am Datenmodell müssen immer im Kontext von 
             AngularJS erfolgen. Sonst erfolgt kein Update der View.</h3>
           <br>
-          <h3>Dies kann über <code>$scope.apply()</code> erzwungen werden.</h3>
+          <h3>Dies kann über <code>$scope.$apply()</code> erzwungen werden.</h3>
           <br>
           <h3>Häufigste Anwendung: 
             <ul>
@@ -687,7 +688,7 @@ app.directive('myDirective', function () {
 
         <h2 lang="de">Alternative 2: Definition im <code>&lt;script/&gt;</code>-Tag</h2>      
         <h2 lang="en">Alternative 2: Definition within <code>&lt;script/&gt;</code> tag</h2>      
-        <pre class="prettyprint">&lt;script type="text/ng-template id="/myButton.html"&gt;
+        <pre class="prettyprint">&lt;script type="text/ng-template" id="/myButton.html"&gt;
   &lt;button type="button" class="btn"&gt;click me&lt;/button&gt;
 &lt;/script&gt;</pre>
       </slide>
@@ -744,7 +745,7 @@ app.directive('myDirective', function () {
           <li>Integration with other JS libraries</li>
         </ul>
         <pre listing-of="myLinkedButton"></pre>
-        <pre class="prettyprint">&lt;my-linked-button message="42, ist the answer!"/&gt;</pre>
+        <pre class="prettyprint">&lt;my-linked-button message="42, ist the answer!"&gt;&lt;/my-linked-button&gt;</pre>
         <div id="button">
           <my-linked-button message="42, ist the answer!"/>
         </div>
@@ -783,8 +784,6 @@ app.directive('myDirective', function () {
           <div>anyVar: {{anyVar}}</div>
         </div>
       </slide>
-
-
       
       <div id="viewTemplates">
         <script type="text/ng-template" id="/defaultTemplate.html">
@@ -799,6 +798,7 @@ app.directive('myDirective', function () {
       </div>
       <script id="viewConfig">
        app.config(function($routeProvider) {
+
          $routeProvider
         .when('/template1', {
            templateUrl: '/template1.html',
@@ -817,9 +817,9 @@ app.directive('myDirective', function () {
         <h3 lang="en">Views may be externalized in templates.</h3>
         <h3 lang="de">Deep-Linking wird unterstützt.</h3>
         <h3 lang="en">Deep linking is supported.</h3>
-        <a class="btn btn-default" href="#defaultTemplate?slide=24">defaultTemplate</a>
-        <a class="btn btn-default" href="#template1?slide=24">template1</a>
-        <a class="btn btn-default" href="#template2?slide=24">template2</a>
+        <a class="btn btn-default" href="#defaultTemplate?slide=25">defaultTemplate</a>
+        <a class="btn btn-default" href="#template1?slide=25">template1</a>
+        <a class="btn btn-default" href="#template2?slide=25">template2</a>
         <br><br>
         <div id="viewExample">
           <div ng-view></div>
@@ -875,6 +875,25 @@ app.directive('myDirective', function () {
         <pre listing-of="uiRouterConfig"></pre>
         <pre class="prettyprint">&lt;div ui-view="left"&gt;x&lt;/div&gt;
 &lt;div ui-view="right"&gt;x&lt;/div&gt;</pre>
+      </slide>
+
+      <slide>
+        <h1>Input Validation</h1>
+        <div id="css-form">
+          <form novalidate class="css-form">
+            <style type="text/css">
+             #css-form input.ng-invalid.ng-touched {
+               background-color: #FA787E;
+             }
+             #css-form input.ng-valid.ng-touched {
+               background-color: #78FA89;
+             }
+            </style>
+            <input type="text" class="form-control" ng-model="var1" required placeholder="this is required"/>
+            <input type="text" class="form-control" ng-model="var2" pattern="^\S+$" placeholder="no spaces here"/>
+          </form>
+        </div>
+        <pre listing-of="css-form"></pre>        
       </slide>
 
       <script id="httpExampleMocking">
